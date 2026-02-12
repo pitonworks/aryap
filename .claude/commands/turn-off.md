@@ -1,14 +1,28 @@
-# Turn Off - Aryap Projesi
+Session'i kapatmadan once yapilmasi gerekenler:
 
-Session'i duzgunce kapat:
+1. **Mevcut durumu degerlendir**:
+   - task-index.md oku — aktif task var mi?
+   - Yapilan isleri listele
 
-1. Mevcut calismayi kaydet (dosyalari kontrol et)
-2. `aryap-tasks/active/session-notes.md` dosyasini guncelle:
-   - Bu session'da ne yapildi?
-   - Nerede kalindi?
-   - Siradaki adim ne?
-   - Bilinen sorunlar
-3. `aryap-tasks/task-index.md` task durumlarini guncelle
-4. `aryap-docs/MEMORY.md` dosyasini onemli bilgilerle guncelle
-5. Dev server calisiyorsa durdur
-6. Kisa bir ozet goster
+2. **Task durumlarini guncelle**:
+   - Tamamlanan task'lari COMPLETED olarak isaretle
+   - Yarim kalanlari IN_PROGRESS birak veya notla PENDING'e cevir
+   - Dashboard tablosundaki sayilari guncelle
+
+3. **Session notu yaz** — `aryap-tasks/active/session-notes.md`:
+   - Tarih
+   - Bu session'da yapilanlar (kisa maddeler)
+   - Yarim kalan isler
+   - Bir sonraki session'da yapilmasi gerekenler
+   - Dikkat edilecek noktalar
+
+4. **CLAUDE.md mevcut durum** bolumunu guncelle:
+   - Progress sayisini guncelle
+   - Siradaki tasklari guncelle
+
+5. **Git full calistir** — tum dosyalari stage et, commit et, push et
+
+6. **Kapanis mesaji ver**:
+   - Session ozeti
+   - Bir sonraki session'da yapilacaklar
+   - "Session kapatildi, tum degisiklikler push edildi."

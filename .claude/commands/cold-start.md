@@ -1,16 +1,17 @@
-# Cold Start - Aryap Projesi
+Yeni bir session basliyor. Projeyi tam olarak anlamak icin asagidaki adimlari sirasiyla uygula:
 
-Proje durumunu hizlica anlamak icin asagidaki adimlari takip et:
+1. `CLAUDE.md` dosyasini oku — proje ozeti, conventions, slash command referanslari
+2. `aryap-docs/MEMORY.md` oku — kalici hafiza, teknik kararlar, ogrenilen pattern'ler
+3. `aryap-tasks/task-index.md` oku — dashboard + tum task durumlari
+4. `aryap-tasks/active/session-notes.md` oku — onceki session notlari
+5. Aktif (IN_PROGRESS) task var mi kontrol et → varsa phase dosyasindan detayini oku
+6. Son birkac git commit'i incele (`git log --oneline -10`)
+7. Kisa bir durum raporu ver:
+   - Toplam ilerleme (X/Y)
+   - Hangi phase'de oldugumuz
+   - Aktif task varsa hangisi
+   - Siradaki task(lar) ve bagimliliklari
+   - Onceki session'dan dikkat edilecek notlar (varsa)
+8. "Hazirim, devam edebiliriz." mesaji ver
 
-1. **Task durumunu kontrol et**: `aryap-tasks/task-index.md` dosyasini oku
-2. **Son session notlarini oku**: `aryap-tasks/active/session-notes.md`
-3. **Changelog'u kontrol et**: `aryap-docs/CHANGELOG.md`
-4. **Memory'yi oku**: `aryap-docs/MEMORY.md`
-5. **Aktif branch ve son commit'leri kontrol et**: `git log --oneline -5`
-6. **Dev server durumunu kontrol et**: Port 3000 kullanilabilir mi?
-
-Sonuc olarak kisa bir durum raporu olustur:
-- Hangi phase'deyiz?
-- Son tamamlanan task nedir?
-- Siradaki task nedir?
-- Bilinen sorunlar var mi?
+NOT: Kod degistirme. Sadece oku ve rapor ver.

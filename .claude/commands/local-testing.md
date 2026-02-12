@@ -1,13 +1,28 @@
-# Local Testing - Aryap Projesi
+Local dev ortamini ayaga kaldir ve tum servisleri dogrula:
 
-Yerel test suite'ini calistir:
+0. **Port temizligi** (ONCELIKLI):
+   - Eski process'leri kontrol et ve temizle
 
-1. **Lint kontrolu**: `pnpm lint`
-2. **Build testi**: `pnpm build`
-3. **TypeScript kontrolu**: `npx tsc --noEmit`
+1. **Build kontrolu**:
+   - `pnpm build` calistir
+   - Hata varsa raporla
+
+2. **Lint kontrolu**:
+   - `pnpm lint` calistir
+   - Uyari/hata varsa listele
+
+3. **TypeScript kontrolu**:
+   - `npx tsc --noEmit` calistir
+
 4. **Sayfa kontrolleri**:
-   - Ana sayfa (/) yukluyor mu?
-   - Dil degisimi (/tr, /en) calisiyor mu?
-   - Tum sayfalar 404 vermiyor mu?
-5. **Responsive kontrol**: Mobil gorunumlerde bozukluk var mi?
-6. Sonuclari raporla ve hatalari listele
+   - Dev server calistir
+   - Ana sayfa (/tr, /en) yukluyor mu?
+   - Tum sayfalar 200 donuyor mu?
+   - Dil degisimi calisiyor mu?
+
+5. **Ozet rapor ver**:
+   - Her servisin durumu (OK/FAIL)
+   - Erisim URL'leri
+   - "Test ortami hazir." veya bulunan hatalari bildir
+
+NOT: Sunuculari arka planda baslatma — sadece build ve health check yap.
