@@ -85,12 +85,18 @@ export function HeroSection() {
           </motion.p>
 
           <motion.div variants={childVariants}>
-            <Link
-              href={`/${locale}/projects`}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-white/90 text-brand backdrop-blur-sm shadow-glass-lg hover:bg-white hover:shadow-brand-glow transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-block"
             >
-              {t('heroCta')}
-            </Link>
+              <Link
+                href={`/${locale}/projects`}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-white/90 text-brand backdrop-blur-sm shadow-glass-lg hover:bg-white hover:shadow-brand-glow transition-all duration-500"
+              >
+                {t('heroCta')}
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>

@@ -84,7 +84,12 @@ export function StatsSection() {
                 delay: index * 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 lg:p-8 text-center"
+              whileHover={{
+                y: -6,
+                scale: 1.05,
+                borderColor: 'rgba(232, 168, 56, 0.3)',
+              }}
+              className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 lg:p-8 text-center cursor-pointer hover:bg-white/15 hover:shadow-accent-glow transition-all duration-500"
             >
               <div className="font-heading text-3xl sm:text-4xl md:text-5xl text-accent mb-2">
                 <AnimatedCounter

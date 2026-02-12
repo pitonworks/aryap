@@ -67,8 +67,8 @@
 
   .glass-card-hover {
     @apply bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-glass
-           hover:shadow-glass-lg hover:border-white/60 hover:-translate-y-1 hover:scale-[1.01]
-           transition-all duration-300;
+           hover:shadow-glass-lg hover:border-brand/20 hover:-translate-y-2 hover:scale-[1.02]
+           transition-all duration-500 ease-out;
   }
 
   .glass-card-solid {
@@ -112,6 +112,40 @@
   /* Glass Divider */
   .glass-divider {
     @apply h-px bg-gradient-to-r from-transparent via-white/30 to-transparent;
+  }
+
+  /* Section Divider — gradient line between sections */
+  .section-divider {
+    @apply relative h-px w-full overflow-visible;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(27, 58, 75, 0.08) 15%,
+      rgba(27, 58, 75, 0.15) 50%,
+      rgba(27, 58, 75, 0.08) 85%,
+      transparent 100%
+    );
+  }
+  .section-divider::before {
+    content: '';
+    @apply absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 rounded-full bg-brand/20;
+  }
+
+  /* Section Divider Light — for dark backgrounds */
+  .section-divider-light {
+    @apply relative h-px w-full overflow-visible;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 15%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.1) 85%,
+      transparent 100%
+    );
+  }
+  .section-divider-light::before {
+    content: '';
+    @apply absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 rounded-full bg-white/20;
   }
 }
 

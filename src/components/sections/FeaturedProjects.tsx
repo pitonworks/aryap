@@ -141,12 +141,14 @@ function ProjectCard({
           src={project.image}
           alt={getLocalizedValue(project.title, locale)}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 33vw"
         />
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         {/* Type badge */}
         <div className="absolute top-4 left-4">
-          <span className="status-badge bg-white/80 backdrop-blur-sm text-brand">
+          <span className="status-badge bg-white/80 backdrop-blur-sm text-brand group-hover:bg-white/90 group-hover:shadow-glass transition-all duration-300">
             {typeLabels[project.type]}
           </span>
         </div>
@@ -158,19 +160,19 @@ function ProjectCard({
           {getLocalizedValue(project.title, locale)}
         </h3>
         <div className="flex flex-wrap items-center gap-3 text-neutral-500 text-sm">
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 group-hover:text-neutral-700 transition-colors duration-300">
             <MapPin className="w-3.5 h-3.5" />
             {getLocalizedValue(project.location, locale)}
           </span>
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 group-hover:text-neutral-700 transition-colors duration-300">
             <Ruler className="w-3.5 h-3.5" />
             {formatNumber(project.area)} m²
           </span>
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 group-hover:text-neutral-700 transition-colors duration-300">
             <Building2 className="w-3.5 h-3.5" />
             {project.units}
           </span>
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 group-hover:text-neutral-700 transition-colors duration-300">
             <Calendar className="w-3.5 h-3.5" />
             {project.year}
           </span>

@@ -6,6 +6,7 @@ import { FeaturedProjects } from '@/components/sections/FeaturedProjects';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { WhyUsSection } from '@/components/sections/WhyUsSection';
 import { CTASection } from '@/components/sections/CTASection';
+import { SectionDivider } from '@/components/ui/SectionDivider';
 
 export default function HomePage({
   params: { locale },
@@ -18,9 +19,13 @@ export default function HomePage({
   return (
     <>
       <HeroSection />
+      <SectionDivider />
       <FeaturedProjects projects={featuredProjects} locale={locale} />
+      <SectionDivider />
       <StatsSection />
+      <SectionDivider variant="dark" />
       <WhyUsSection />
+      <SectionDivider />
       <CTASection />
     </>
   );

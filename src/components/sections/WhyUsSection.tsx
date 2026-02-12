@@ -60,15 +60,21 @@ export function WhyUsSection() {
                   delay: 0.2 + index * 0.15,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="glass-card-hover p-8 group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="glass-card-hover p-8 group cursor-pointer"
               >
-                <div className="w-14 h-14 rounded-2xl bg-brand/10 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-brand/15 transition-colors duration-300">
-                  <Icon className="w-7 h-7 text-brand" />
-                </div>
-                <h3 className="font-heading text-xl text-neutral-900 mb-3">
+                <motion.div
+                  className="w-14 h-14 rounded-2xl bg-brand/10 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-brand/15 group-hover:shadow-brand-glow transition-all duration-500"
+                  whileHover={{ rotate: [0, -5, 5, 0], scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Icon className="w-7 h-7 text-brand group-hover:text-brand-light transition-colors duration-300" />
+                </motion.div>
+                <h3 className="font-heading text-xl text-neutral-900 mb-3 group-hover:text-brand transition-colors duration-300">
                   {t(card.titleKey)}
                 </h3>
-                <p className="text-neutral-500 text-sm leading-relaxed font-body">
+                <p className="text-neutral-500 text-sm leading-relaxed font-body group-hover:text-neutral-600 transition-colors duration-300">
                   {t(card.descKey)}
                 </p>
               </motion.div>
