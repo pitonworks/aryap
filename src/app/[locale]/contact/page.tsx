@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react';
 import { contactInfo } from '@/data/contact';
 
 export default function ContactPage() {
@@ -46,7 +46,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Content */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Form */}
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-neutral-50 border border-brand/30 rounded-2xl p-8 text-center"
+                  className="glass-card p-8 text-center"
                 >
                   <CheckCircle className="w-16 h-16 text-brand mx-auto mb-4" />
                   <h3 className="text-xl font-heading font-bold mb-2 text-neutral-900">{t('successTitle')}</h3>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                         type="text"
                         required
                         placeholder={t('namePlaceholder')}
-                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand transition-colors"
+                        className="glass-input"
                       />
                     </div>
                     <div>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                         type="email"
                         required
                         placeholder={t('emailPlaceholder')}
-                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand transition-colors"
+                        className="glass-input"
                       />
                     </div>
                   </div>
@@ -101,7 +101,7 @@ export default function ContactPage() {
                       <input
                         type="tel"
                         placeholder={t('phonePlaceholder')}
-                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand transition-colors"
+                        className="glass-input"
                       />
                     </div>
                     <div>
@@ -112,7 +112,7 @@ export default function ContactPage() {
                         type="text"
                         required
                         placeholder={t('subjectPlaceholder')}
-                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand transition-colors"
+                        className="glass-input"
                       />
                     </div>
                   </div>
@@ -124,13 +124,13 @@ export default function ContactPage() {
                       required
                       rows={5}
                       placeholder={t('messagePlaceholder')}
-                      className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-neutral-800 placeholder-neutral-400 focus:outline-none focus:border-brand transition-colors resize-none"
+                      className="glass-input resize-none"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full sm:w-auto px-8 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-light transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-8 py-3 bg-brand text-white font-semibold rounded-2xl hover:bg-brand-light shadow-brand-glow transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <Send className="w-4 h-4" />
                     {sending ? t('sending') : t('send')}
@@ -150,7 +150,7 @@ export default function ContactPage() {
 
               <div className="space-y-6">
                 {/* Eskisehir Office */}
-                <div className="flex items-start gap-4 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl">
+                <div className="glass-card flex items-start gap-4 p-6">
                   <MapPin className="w-6 h-6 text-brand flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1 text-neutral-900">
@@ -166,7 +166,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Bursa Office */}
-                <div className="flex items-start gap-4 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl">
+                <div className="glass-card flex items-start gap-4 p-6">
                   <MapPin className="w-6 h-6 text-brand flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1 text-neutral-900">
@@ -182,7 +182,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* WhatsApp */}
-                <div className="flex items-start gap-4 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl">
+                <div className="glass-card flex items-start gap-4 p-6">
                   <MessageCircle className="w-6 h-6 text-brand flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1 text-neutral-900">WhatsApp</h3>
@@ -193,7 +193,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Email */}
-                <div className="flex items-start gap-4 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl">
+                <div className="glass-card flex items-start gap-4 p-6">
                   <Mail className="w-6 h-6 text-brand flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1 text-neutral-900">{tc('email')}</h3>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Working Hours */}
-                <div className="flex items-start gap-4 p-6 bg-neutral-50 border border-neutral-200 rounded-2xl">
+                <div className="glass-card flex items-start gap-4 p-6">
                   <Clock className="w-6 h-6 text-brand flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1 text-neutral-900">{t('workingHoursTitle')}</h3>

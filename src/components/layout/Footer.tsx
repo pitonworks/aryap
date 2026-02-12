@@ -47,7 +47,7 @@ export function Footer() {
   const locale = useLocale();
 
   return (
-    <footer className="bg-brand-dark border-t border-white/10">
+    <footer className="bg-gradient-to-b from-brand-dark to-brand-900 border-t border-white/10">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
@@ -135,7 +135,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 hover:border-accent/30 bg-white/5 hover:bg-accent/10 transition-all duration-300"
+                    className="group flex items-center justify-center w-10 h-10 rounded-xl border border-white/10 hover:border-accent/30 bg-white/5 backdrop-blur-sm hover:bg-accent/10 transition-all duration-300"
                     aria-label={social.name}
                   >
                     {IconComponent ? (
@@ -163,7 +163,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/5">
+      <div className="border-t border-white/5 bg-black/10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-white/30 tracking-wide">

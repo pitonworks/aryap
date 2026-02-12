@@ -54,16 +54,6 @@ export default function AboutPage() {
     <>
       {/* Hero Banner */}
       <section className="relative pt-40 pb-20 bg-gradient-to-b from-neutral-50 to-white">
-        <div className="absolute inset-0 opacity-[0.06]">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle, #1B3A4B 1px, transparent 1px)',
-              backgroundSize: '40px 40px',
-            }}
-          />
-        </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +79,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <AnimatedSection>
-              <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm p-8 sm:p-10">
+              <div className="glass-card p-8 sm:p-10">
                 <h2 className="text-3xl font-heading font-bold mb-6 text-brand">
                   {t('storyTitle')}
                 </h2>
@@ -103,7 +93,7 @@ export default function AboutPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop"
                   alt={t('storyTitle')}
@@ -119,7 +109,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-neutral-50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-neutral-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-neutral-900">
@@ -132,8 +122,8 @@ export default function AboutPage() {
               const Icon = value.icon;
               return (
                 <AnimatedSection key={value.key} delay={index * 0.1}>
-                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 text-center h-full hover:border-brand/30 transition-colors duration-300">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-brand-50 mb-5">
+                  <div className="glass-card-hover p-6 text-center h-full">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand/10 backdrop-blur-sm mb-5">
                       <Icon className="w-7 h-7 text-brand" />
                     </div>
                     <h3 className="text-lg font-heading font-bold mb-2 text-neutral-900">
@@ -151,7 +141,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-white">
+      <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-neutral-900">
@@ -166,7 +156,7 @@ export default function AboutPage() {
             {team.map((member, index) => (
               <AnimatedSection key={member.id} delay={index * 0.1}>
                 <div className="text-center group">
-                  <div className="relative w-32 h-32 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-neutral-200 group-hover:ring-brand/40 transition-all duration-300">
+                  <div className="relative w-32 h-32 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-white/50 shadow-glass group-hover:ring-brand/40 group-hover:shadow-glass-lg transition-all duration-300">
                     <Image
                       src={member.image}
                       alt={member.name}
@@ -189,7 +179,7 @@ export default function AboutPage() {
       </section>
 
       {/* Certifications Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-neutral-50">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-neutral-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-neutral-900">
@@ -200,7 +190,7 @@ export default function AboutPage() {
           <div className="max-w-2xl mx-auto space-y-4">
             {certKeys.map((key, index) => (
               <AnimatedSection key={key} delay={index * 0.1}>
-                <div className="flex items-center gap-4 p-5 bg-white border border-neutral-200 rounded-xl hover:border-brand/30 transition-colors duration-300">
+                <div className="glass-card-hover flex items-center gap-4 p-5">
                   <Award className="w-6 h-6 text-brand flex-shrink-0" />
                   <span className="text-neutral-700">{t(key)}</span>
                 </div>

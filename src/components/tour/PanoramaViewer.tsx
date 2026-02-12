@@ -68,12 +68,12 @@ export default function PanoramaViewer({ imageUrl, title }: PanoramaViewerProps)
 
   if (error) {
     return (
-      <div className="relative w-full h-[500px] bg-neutral-100 border border-neutral-200 rounded-2xl overflow-hidden">
+      <div className="relative w-full h-[500px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-glass">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${imageUrl})` }}
         />
-        <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
           <div className="text-center px-4">
             <p className="text-lg font-heading font-bold text-neutral-900 mb-2">{title}</p>
             <p className="text-sm text-neutral-500">360° viewer - drag to look around</p>
@@ -84,9 +84,9 @@ export default function PanoramaViewer({ imageUrl, title }: PanoramaViewerProps)
   }
 
   return (
-    <div className="relative w-full h-[500px] bg-neutral-100 border border-neutral-200 rounded-2xl overflow-hidden">
+    <div className="relative w-full h-[500px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-glass">
       {!loaded && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-neutral-100">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-neutral-100/80 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-neutral-200 border-t-brand rounded-full animate-spin" />
             <p className="text-sm text-neutral-400">Loading panorama...</p>
@@ -96,13 +96,15 @@ export default function PanoramaViewer({ imageUrl, title }: PanoramaViewerProps)
 
       <div ref={containerRef} className="w-full h-full" />
 
-      <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
+      {/* Title overlay */}
+      <div className="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-xl border border-white/40 px-4 py-2 rounded-2xl shadow-glass">
         <p className="text-sm font-semibold text-neutral-900">{title}</p>
       </div>
 
+      {/* Fullscreen button */}
       <button
         onClick={toggleFullscreen}
-        className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm hover:bg-white transition-colors"
+        className="absolute top-4 right-4 z-10 p-2 bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl shadow-glass hover:bg-white/90 transition-colors"
       >
         {isFullscreen ? <Minimize2 className="w-5 h-5 text-neutral-700" /> : <Maximize2 className="w-5 h-5 text-neutral-700" />}
       </button>

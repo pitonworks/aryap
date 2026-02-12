@@ -5,14 +5,14 @@ import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { MapPin, Filter, ExternalLink } from 'lucide-react';
-import { projects, type ProjectType, type ProjectStatus } from '@/data/projects';
+import { projects, type ProjectType } from '@/data/projects';
 import { getLocalizedValue, formatNumber } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
 const MapView = dynamic(() => import('@/components/map/MapView'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[600px] bg-neutral-100 rounded-2xl flex items-center justify-center">
+    <div className="w-full h-[600px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl flex items-center justify-center shadow-glass">
       <div className="w-12 h-12 border-4 border-neutral-200 border-t-brand rounded-full animate-spin" />
     </div>
   ),
@@ -72,11 +72,11 @@ export default function MapPage() {
               <button
                 key={f.key}
                 onClick={() => setTypeFilter(f.key)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={
                   typeFilter === f.key
-                    ? 'bg-brand text-white'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
+                    ? 'filter-pill-active'
+                    : 'filter-pill-inactive'
+                }
               >
                 {f.label}
               </button>
@@ -104,7 +104,7 @@ export default function MapPage() {
               >
                 <Link
                   href={`/${locale}/projects/${project.slug}`}
-                  className="block p-4 bg-white border border-neutral-200 rounded-xl hover:border-brand/30 hover:shadow-md transition-all group"
+                  className="block p-4 glass-card-hover group"
                 >
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-brand flex-shrink-0 mt-0.5" />

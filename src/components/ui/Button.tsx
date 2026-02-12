@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'glass' | 'accent';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   onClick?: () => void;
@@ -22,12 +22,16 @@ const variantStyles: Record<string, string> = {
     'border border-brand/30 text-brand hover:bg-brand-50 hover:border-brand',
   ghost:
     'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100',
+  glass:
+    'bg-white/60 backdrop-blur-xl border border-white/40 text-neutral-800 font-semibold shadow-glass hover:bg-white/80 hover:shadow-glass-lg',
+  accent:
+    'bg-accent text-white font-semibold shadow-accent-glow hover:bg-accent-dark',
 };
 
 const sizeStyles: Record<string, string> = {
-  sm: 'px-4 py-2 text-sm rounded-lg',
-  md: 'px-6 py-3 text-base rounded-xl',
-  lg: 'px-8 py-4 text-lg rounded-xl',
+  sm: 'px-4 py-2 text-sm rounded-xl',
+  md: 'px-6 py-3 text-base rounded-2xl',
+  lg: 'px-8 py-4 text-lg rounded-2xl',
 };
 
 export default function Button({

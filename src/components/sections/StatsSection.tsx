@@ -65,13 +65,13 @@ export function StatsSection() {
   return (
     <section
       ref={ref}
-      className="relative py-20 md:py-28 border-t border-b border-accent/20"
+      className="relative py-20 md:py-28"
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-brand-dark" />
+      <div className="absolute inset-0 bg-gradient-to-br from-brand-dark to-brand-900" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.labelKey}
@@ -84,7 +84,7 @@ export function StatsSection() {
                 delay: index * 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="text-center"
+              className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 lg:p-8 text-center"
             >
               <div className="font-heading text-3xl sm:text-4xl md:text-5xl text-accent mb-2">
                 <AnimatedCounter

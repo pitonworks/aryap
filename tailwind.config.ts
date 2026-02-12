@@ -51,10 +51,31 @@ const config: Config = {
         heading: ['var(--font-poppins)', 'sans-serif'],
         body: ['var(--font-poppins)', 'sans-serif'],
       },
+      boxShadow: {
+        glass: '0 8px 32px rgba(0, 0, 0, 0.06)',
+        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.08)',
+        'glass-inset': 'inset 0 1px 1px rgba(255, 255, 255, 0.4)',
+        soft: '0 2px 16px rgba(0, 0, 0, 0.04)',
+        'soft-lg': '0 4px 24px rgba(0, 0, 0, 0.06)',
+        'brand-glow': '0 4px 24px rgba(27, 58, 75, 0.15)',
+        'accent-glow': '0 4px 24px rgba(232, 168, 56, 0.25)',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+      },
+      backdropBlur: {
+        '2xl': '40px',
+        '3xl': '64px',
+      },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out forwards',
         'slide-up': 'slideUp 0.6s ease-out forwards',
         'slide-down': 'slideDown 0.4s ease-out forwards',
+        shimmer: 'shimmer 2s linear infinite',
+        float: 'float 6s ease-in-out infinite',
+        'glass-reveal': 'glassReveal 0.5s ease-out forwards',
+        'scale-in': 'scaleIn 0.3s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -68,6 +89,22 @@ const config: Config = {
         slideDown: {
           '0%': { opacity: '0', transform: 'translateY(-20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        glassReveal: {
+          '0%': { opacity: '0', backdropFilter: 'blur(0px)' },
+          '100%': { opacity: '1', backdropFilter: 'blur(16px)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },
     },

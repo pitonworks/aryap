@@ -6,6 +6,7 @@ import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BottomNav } from '@/components/layout/BottomNav';
 import '@/app/globals.css';
 
 const poppins = Poppins({
@@ -54,11 +55,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={poppins.variable}>
-      <body className="bg-white text-neutral-800 font-body antialiased">
+      <body className="bg-gradient-to-b from-neutral-50 to-white text-neutral-800 font-body antialiased">
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <BottomNav />
         </NextIntlClientProvider>
       </body>
     </html>

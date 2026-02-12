@@ -35,9 +35,9 @@ const statusTextColors: Record<ProjectStatus, string> = {
 };
 
 const statusBadgeBg: Record<ProjectStatus, string> = {
-  completed: 'bg-green-50',
-  ongoing: 'bg-yellow-50',
-  upcoming: 'bg-blue-50',
+  completed: 'bg-green-50/80',
+  ongoing: 'bg-yellow-50/80',
+  upcoming: 'bg-blue-50/80',
 };
 
 export default function ProjectsPage() {
@@ -75,16 +75,6 @@ export default function ProjectsPage() {
     <>
       {/* Hero Banner */}
       <section className="relative pt-40 pb-20 bg-gradient-to-b from-neutral-50 to-white">
-        <div className="absolute inset-0 opacity-[0.06]">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle, #1B3A4B 1px, transparent 1px)',
-              backgroundSize: '40px 40px',
-            }}
-          />
-        </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -106,7 +96,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Filter Bar */}
-      <section className="py-8 border-b border-neutral-200">
+      <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
             {/* Type Filter */}
@@ -115,11 +105,11 @@ export default function ProjectsPage() {
                 <button
                   key={`type-${filter.value}`}
                   onClick={() => setActiveType(filter.value)}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                  className={
                     activeType === filter.value
-                      ? 'bg-brand text-white'
-                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                  }`}
+                      ? 'filter-pill-active'
+                      : 'filter-pill-inactive'
+                  }
                 >
                   {t(filter.key)}
                 </button>
@@ -132,11 +122,11 @@ export default function ProjectsPage() {
                 <button
                   key={`status-${filter.value}`}
                   onClick={() => setActiveStatus(filter.value)}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                  className={
                     activeStatus === filter.value
-                      ? 'bg-brand text-white'
-                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                  }`}
+                      ? 'filter-pill-active'
+                      : 'filter-pill-inactive'
+                  }
                 >
                   {t(filter.key)}
                 </button>
@@ -167,9 +157,9 @@ export default function ProjectsPage() {
                     href={`/${locale}/projects/${project.slug}`}
                     className="group block h-full"
                   >
-                    <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden h-full hover:shadow-lg transition-all duration-300">
+                    <div className="glass-card-hover overflow-hidden h-full">
                       {/* Image */}
-                      <div className="relative aspect-[16/10] overflow-hidden">
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-t-3xl">
                         <Image
                           src={project.image}
                           alt={getLocalizedValue(project.title, locale)}
@@ -181,7 +171,7 @@ export default function ProjectsPage() {
                         {/* Status Badge */}
                         <div className="absolute top-4 right-4">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full ${statusBadgeBg[project.status]} ${statusTextColors[project.status]}`}
+                            className={`status-badge backdrop-blur-sm ${statusBadgeBg[project.status]} ${statusTextColors[project.status]}`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${statusColors[project.status]}`}
@@ -194,7 +184,7 @@ export default function ProjectsPage() {
                       {/* Content */}
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-brand-50 text-brand">
+                          <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-brand/10 text-brand">
                             {getTypeLabel(project.type)}
                           </span>
                         </div>
@@ -211,11 +201,11 @@ export default function ProjectsPage() {
                           <span>
                             {formatNumber(project.area)} {t('sqm')}
                           </span>
-                          <span className="w-px h-3 bg-neutral-200" />
+                          <span className="w-px h-3 bg-neutral-200/60" />
                           <span>
                             {project.units} {t('units')}
                           </span>
-                          <span className="w-px h-3 bg-neutral-200" />
+                          <span className="w-px h-3 bg-neutral-200/60" />
                           <span>{project.year}</span>
                         </div>
 
@@ -230,7 +220,7 @@ export default function ProjectsPage() {
                                 {project.progress}%
                               </span>
                             </div>
-                            <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
+                            <div className="w-full h-1.5 bg-neutral-100/60 rounded-full overflow-hidden">
                               <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${project.progress}%` }}
@@ -259,11 +249,13 @@ export default function ProjectsPage() {
               animate={{ opacity: 1 }}
               className="text-center py-20"
             >
-              <p className="text-neutral-500 text-lg">
-                {locale === 'tr'
-                  ? 'Bu filtrelere uygun proje bulunamadi.'
-                  : 'No projects found for these filters.'}
-              </p>
+              <div className="glass-card inline-block px-8 py-6">
+                <p className="text-neutral-500 text-lg">
+                  {locale === 'tr'
+                    ? 'Bu filtrelere uygun proje bulunamadi.'
+                    : 'No projects found for these filters.'}
+                </p>
+              </div>
             </motion.div>
           )}
         </div>

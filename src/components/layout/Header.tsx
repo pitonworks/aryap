@@ -70,7 +70,7 @@ export function Header() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           scrolled
-            ? 'bg-white/90 backdrop-blur-md border-b border-neutral-100 shadow-sm'
+            ? 'bg-white/70 backdrop-blur-2xl border-b border-white/40 shadow-glass'
             : 'bg-transparent'
         )}
       >
@@ -96,10 +96,10 @@ export function Header() {
                     key={link.key}
                     href={`/${locale}${link.href === '/' ? '' : link.href}`}
                     className={cn(
-                      'relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-300 rounded-lg',
+                      'relative px-4 py-2 text-sm font-medium tracking-wide transition-all duration-300 rounded-xl',
                       active
                         ? 'text-brand font-semibold'
-                        : 'text-neutral-600 hover:text-brand'
+                        : 'text-neutral-600 hover:text-brand hover:bg-white/50 hover:backdrop-blur-sm'
                     )}
                   >
                     {t(link.key)}
@@ -120,7 +120,7 @@ export function Header() {
               {/* Language Switcher */}
               <button
                 onClick={switchLocale}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-neutral-600 hover:text-brand border border-neutral-200 hover:border-brand/30 rounded-lg transition-all duration-300 hover:bg-brand-50"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-neutral-600 hover:text-brand border border-white/40 hover:border-brand/30 rounded-xl transition-all duration-300 hover:bg-white/50 backdrop-blur-sm"
                 aria-label={t('language')}
               >
                 <Globe className="w-4 h-4" />
@@ -132,7 +132,7 @@ export function Header() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden flex items-center justify-center w-10 h-10 text-neutral-700 hover:text-brand border border-neutral-200 hover:border-brand/30 rounded-lg transition-all duration-300 hover:bg-brand-50"
+                className="lg:hidden flex items-center justify-center w-10 h-10 text-neutral-700 hover:text-brand border border-white/40 hover:border-brand/30 rounded-xl transition-all duration-300 hover:bg-white/50 backdrop-blur-sm"
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               >
                 {mobileMenuOpen ? (
@@ -161,7 +161,7 @@ export function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-white/95 backdrop-blur-xl"
+              className="absolute inset-0 bg-white/70 backdrop-blur-2xl"
               onClick={() => setMobileMenuOpen(false)}
             />
 

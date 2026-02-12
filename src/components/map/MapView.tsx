@@ -19,7 +19,7 @@ export default function MapView({ projects, locale }: MapViewProps) {
 
   if (!mapboxToken) {
     return (
-      <div className="relative w-full h-[600px] bg-neutral-100 border border-neutral-200 rounded-2xl overflow-hidden">
+      <div className="relative w-full h-[600px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-glass">
         {/* Demo Map Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-100 via-neutral-50 to-neutral-100">
           <div
@@ -63,10 +63,10 @@ export default function MapView({ projects, locale }: MapViewProps) {
 
         {/* Selected Project Popup */}
         {selectedProject && (
-          <div className="absolute top-4 right-4 w-72 bg-white border border-neutral-200 rounded-xl p-4 shadow-lg z-10">
+          <div className="absolute top-4 right-4 w-72 bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl p-5 shadow-glass-lg z-10">
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute top-2 right-2 p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+              className="absolute top-3 right-3 p-1 hover:bg-white/50 rounded-xl transition-colors"
             >
               <X className="w-4 h-4 text-neutral-500" />
             </button>
@@ -90,7 +90,7 @@ export default function MapView({ projects, locale }: MapViewProps) {
 
         {/* Demo Mode Notice */}
         <div className="absolute bottom-4 left-4 right-4">
-          <div className="bg-white/90 backdrop-blur-sm border border-brand/20 rounded-xl px-4 py-3 text-center shadow-sm">
+          <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl px-4 py-3 text-center shadow-glass">
             <p className="text-sm text-brand">{t('noToken')}</p>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function MapView({ projects, locale }: MapViewProps) {
 
 function MapboxMap({ projects, locale, token }: MapViewProps & { token: string }) {
   return (
-    <div className="relative w-full h-[600px] bg-neutral-100 border border-neutral-200 rounded-2xl overflow-hidden">
+    <div className="relative w-full h-[600px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-glass">
       <div id="mapbox-container" className="w-full h-full" ref={(el) => {
         if (!el || el.children.length > 0) return;
         import('mapbox-gl').then((mapboxgl) => {

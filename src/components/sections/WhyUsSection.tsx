@@ -29,7 +29,7 @@ export function WhyUsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-neutral-50">
+    <section ref={ref} className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-neutral-50/50">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -60,9 +60,9 @@ export function WhyUsSection() {
                   delay: 0.2 + index * 0.15,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="bg-white border border-neutral-200 rounded-2xl shadow-sm p-8 hover:border-brand/30 transition-all duration-300 group"
+                className="glass-card-hover p-8 group"
               >
-                <div className="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand/10 transition-colors duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-brand/10 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-brand/15 transition-colors duration-300">
                   <Icon className="w-7 h-7 text-brand" />
                 </div>
                 <h3 className="font-heading text-xl text-neutral-900 mb-3">

@@ -62,9 +62,9 @@ const statusBgColors: Record<ProjectStatus, string> = {
 };
 
 const statusBadgeBg: Record<ProjectStatus, string> = {
-  completed: 'bg-green-50',
-  ongoing: 'bg-yellow-50',
-  upcoming: 'bg-blue-50',
+  completed: 'bg-green-50/80',
+  ongoing: 'bg-yellow-50/80',
+  upcoming: 'bg-blue-50/80',
 };
 
 export default function ProjectDetailPage() {
@@ -78,19 +78,21 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <section className="pt-40 pb-20 text-center bg-white">
+      <section className="pt-40 pb-20 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-heading font-bold mb-4 text-neutral-900">
-            {tc('notFound')}
-          </h1>
-          <p className="text-neutral-500 mb-8">{tc('notFoundDesc')}</p>
-          <Link
-            href={`/${locale}/projects`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-light transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {tc('projects')}
-          </Link>
+          <div className="glass-card inline-block px-12 py-10">
+            <h1 className="text-3xl font-heading font-bold mb-4 text-neutral-900">
+              {tc('notFound')}
+            </h1>
+            <p className="text-neutral-500 mb-8">{tc('notFoundDesc')}</p>
+            <Link
+              href={`/${locale}/projects`}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-semibold rounded-2xl hover:bg-brand-light transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {tc('projects')}
+            </Link>
+          </div>
         </div>
       </section>
     );
@@ -137,7 +139,7 @@ export default function ProjectDetailPage() {
         <div className="absolute top-28 left-4 sm:left-6 lg:left-8 z-10">
           <Link
             href={`/${locale}/projects`}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white/80 backdrop-blur-sm border border-neutral-200 rounded-xl text-neutral-600 hover:text-brand hover:border-brand/30 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white/70 backdrop-blur-xl border border-white/40 rounded-2xl text-neutral-600 hover:text-brand hover:border-brand/30 shadow-glass transition-all duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
             {tc('projects')}
@@ -154,14 +156,14 @@ export default function ProjectDetailPage() {
             >
               <div className="flex items-center gap-3 mb-3">
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full ${statusBadgeBg[project.status]} ${statusColors[project.status]}`}
+                  className={`status-badge backdrop-blur-sm ${statusBadgeBg[project.status]} ${statusColors[project.status]}`}
                 >
                   <span
                     className={`w-1.5 h-1.5 rounded-full ${statusBgColors[project.status]}`}
                   />
                   {getStatusLabel(project.status)}
                 </span>
-                <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-brand-50 text-brand">
+                <span className="status-badge bg-brand/10 backdrop-blur-sm text-brand">
                   {getTypeLabel(project.type)}
                 </span>
               </div>
@@ -178,16 +180,16 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* Info Bar */}
-      <section className="py-8 border-b border-neutral-200">
+      <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+              <div className="info-chip">
                 <Building2 className="w-5 h-5 text-brand mx-auto mb-2" />
                 <p className="text-xs text-neutral-500 mb-1">{t('type')}</p>
                 <p className="text-sm font-semibold text-neutral-900">{getTypeLabel(project.type)}</p>
               </div>
-              <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+              <div className="info-chip">
                 <div className="flex items-center justify-center gap-1.5 mb-2">
                   <span
                     className={`w-2 h-2 rounded-full ${statusBgColors[project.status]}`}
@@ -198,19 +200,19 @@ export default function ProjectDetailPage() {
                   {getStatusLabel(project.status)}
                 </p>
               </div>
-              <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+              <div className="info-chip">
                 <Calendar className="w-5 h-5 text-brand mx-auto mb-2" />
                 <p className="text-xs text-neutral-500 mb-1">{t('year')}</p>
                 <p className="text-sm font-semibold text-neutral-900">{project.year}</p>
               </div>
-              <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+              <div className="info-chip">
                 <Ruler className="w-5 h-5 text-brand mx-auto mb-2" />
                 <p className="text-xs text-neutral-500 mb-1">{t('area')}</p>
                 <p className="text-sm font-semibold text-neutral-900">
                   {formatNumber(project.area)} {t('sqm')}
                 </p>
               </div>
-              <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+              <div className="info-chip">
                 <Users className="w-5 h-5 text-brand mx-auto mb-2" />
                 <p className="text-xs text-neutral-500 mb-1">{t('units')}</p>
                 <p className="text-sm font-semibold text-neutral-900">{project.units}</p>
@@ -221,7 +223,7 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* Description */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <h2 className="text-2xl font-heading font-bold mb-6 text-neutral-900">
@@ -235,7 +237,7 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* Features */}
-      <section className="py-16 sm:py-20 bg-neutral-50">
+      <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
@@ -245,7 +247,7 @@ export default function ProjectDetailPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {features.map((feature, index) => (
               <AnimatedSection key={index} delay={index * 0.05}>
-                <div className="flex items-center gap-3 p-4 bg-neutral-50 border border-neutral-200 rounded-xl">
+                <div className="glass-card-solid flex items-center gap-3 p-4">
                   <CheckCircle className="w-5 h-5 text-brand flex-shrink-0" />
                   <span className="text-neutral-700">{feature}</span>
                 </div>
@@ -257,13 +259,13 @@ export default function ProjectDetailPage() {
 
       {/* Progress Section (Ongoing Only) */}
       {project.status === 'ongoing' && (
-        <section className="py-16 sm:py-20 bg-white">
+        <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimatedSection>
               <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
                 {t('progress')}
               </h2>
-              <div className="max-w-xl">
+              <div className="max-w-xl glass-card p-6">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-neutral-500">
                     {getLocalizedValue(project.title, locale)}
@@ -272,7 +274,7 @@ export default function ProjectDetailPage() {
                     {project.progress}%
                   </span>
                 </div>
-                <div className="w-full h-4 bg-neutral-100 rounded-full overflow-hidden">
+                <div className="w-full h-4 bg-neutral-100/60 rounded-full overflow-hidden">
                   <ProgressBarFill value={project.progress} />
                 </div>
               </div>
@@ -283,7 +285,7 @@ export default function ProjectDetailPage() {
 
       {/* Gallery */}
       {project.gallery.length > 0 && (
-        <section className="py-16 sm:py-20 bg-neutral-50">
+        <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimatedSection>
               <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
@@ -293,7 +295,7 @@ export default function ProjectDetailPage() {
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
               {project.gallery.map((image, index) => (
                 <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden group">
+                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden group">
                     <Image
                       src={image}
                       alt={`${getLocalizedValue(project.title, locale)} - ${index + 1}`}
@@ -311,13 +313,13 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Action Buttons */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href={`/${locale}/map`}
-                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-brand text-white hover:bg-brand-light transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-brand text-white hover:bg-brand-light shadow-brand-glow transition-all duration-300"
               >
                 <Map className="w-5 h-5" />
                 {t('onMap')}
@@ -325,7 +327,7 @@ export default function ProjectDetailPage() {
               {project.hasTour && (
                 <Link
                   href={`/${locale}/virtual-tour`}
-                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl border-2 border-brand text-brand hover:bg-brand-50 transition-colors duration-300"
+                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-white/60 backdrop-blur-xl border border-white/40 text-brand shadow-glass hover:bg-white/80 hover:shadow-glass-lg transition-all duration-300"
                 >
                   <Eye className="w-5 h-5" />
                   {t('virtualTour')}
@@ -338,7 +340,7 @@ export default function ProjectDetailPage() {
 
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
-        <section className="py-16 sm:py-20 bg-neutral-50">
+        <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimatedSection className="mb-10">
               <h2 className="text-2xl font-heading font-bold text-neutral-900">
@@ -353,8 +355,8 @@ export default function ProjectDetailPage() {
                     href={`/${locale}/projects/${related.slug}`}
                     className="group block"
                   >
-                    <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
-                      <div className="relative aspect-[16/10] overflow-hidden">
+                    <div className="glass-card-hover overflow-hidden">
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-t-3xl">
                         <Image
                           src={related.image}
                           alt={getLocalizedValue(related.title, locale)}
