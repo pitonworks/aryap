@@ -76,6 +76,8 @@ const config: Config = {
         float: 'float 6s ease-in-out infinite',
         'glass-reveal': 'glassReveal 0.5s ease-out forwards',
         'scale-in': 'scaleIn 0.3s ease-out forwards',
+        marquee: 'marquee 30s linear infinite',
+        'marquee-slow': 'marquee-slow 40s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -105,6 +107,14 @@ const config: Config = {
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-slow': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
     },

@@ -18,7 +18,7 @@ Aryap Mutahitlik ve Emlak firmasi icin modern, interaktif websitesi. Acik/beyaz 
 
 ## Mevcut Durum
 
-**Progress**: Phase 4 tamamlandi — Site canli, tum sayfalar calisiyor.
+**Progress**: Phase 5 tamamlandi — Yeni sectionlar (Testimonials, ProjectShowcase, Process, Partners) + seamless gecisler eklendi.
 
 > Her yeni session'da `aryap-tasks/task-index.md` oku veya `/cold-start` calistir.
 

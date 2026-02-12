@@ -3,3 +3,7 @@ export { FeaturedProjects } from './FeaturedProjects';
 export { StatsSection } from './StatsSection';
 export { WhyUsSection } from './WhyUsSection';
 export { CTASection } from './CTASection';
+export { TestimonialsSection } from './TestimonialsSection';
+export { ProjectShowcase } from './ProjectShowcase';
+export { ProcessSection } from './ProcessSection';
+export { PartnersSection } from './PartnersSection';
