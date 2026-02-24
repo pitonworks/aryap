@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-reac
 import type { Project } from '@/data/projects';
 import { getLocalizedValue, formatNumber } from '@/lib/utils';
 import { ProjectModal } from '@/components/ui/ProjectModal';
+import { useDragScroll } from '@/lib/useDragScroll';
 
 interface FeaturedProjectsProps {
   projects: Project[];
@@ -22,10 +23,11 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
   const tp = useTranslations('projects');
   const tc = useTranslations('common');
   const ref = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.05 });
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  const { scrollRef, isDragging, scrollTo } = useDragScroll({ momentum: 0.92, friction: 0.94 });
 
   const filteredProjects = activeFilter === 'all'
     ? projects
@@ -37,15 +39,6 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
     commercial: tp('filterCommercial'),
     mixed: tp('filterMixed'),
   };
-
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    const scrollAmount = 400;
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    });
-  }, []);
 
   return (
     <>
@@ -105,18 +98,18 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
           </motion.div>
         </div>
 
-        {/* Horizontal scroll area */}
+        {/* Horizontal scroll area with drag */}
         <div className="relative">
           {/* Navigation arrows */}
           <button
-            onClick={() => scroll('left')}
+            onClick={() => scrollTo('left')}
             className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-elevated flex items-center justify-center hover:bg-white hover:scale-110 hover:shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-300 ring-1 ring-black/5"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-700" />
           </button>
           <button
-            onClick={() => scroll('right')}
+            onClick={() => scrollTo('right')}
             className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-elevated flex items-center justify-center hover:bg-white hover:scale-110 hover:shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-300 ring-1 ring-black/5"
             aria-label="Scroll right"
           >
@@ -133,7 +126,9 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
             >
               <div
                 ref={scrollRef}
-                className="flex gap-4 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4"
+                className={`flex gap-4 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 sm:px-6 lg:px-8 pb-4 select-none ${
+                  isDragging ? 'snap-none' : ''
+                }`}
               >
                 {filteredProjects.map((project, index) => {
                   const isHero = index === 0;
@@ -157,7 +152,9 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
                       <ProjectCard
                         project={project}
                         locale={locale}
-                        onSelect={() => setSelectedProject(project)}
+                        onSelect={() => {
+                          if (!isDragging) setSelectedProject(project);
+                        }}
                       />
                     </motion.div>
                   );
@@ -165,6 +162,9 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
               </div>
             </motion.div>
           </AnimatePresence>
+
+          {/* Scroll progress indicator */}
+          <ScrollProgress scrollRef={scrollRef} />
         </div>
 
         {/* Mobile view all */}
@@ -193,6 +193,43 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
   );
 }
 
+/* Scroll progress bar */
+function ScrollProgress({ scrollRef }: { scrollRef: React.RefObject<HTMLDivElement | null> }) {
+  const [progress, setProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll <= 0) {
+        setProgress(0);
+        return;
+      }
+      setProgress(el.scrollLeft / maxScroll);
+    };
+
+    el.addEventListener('scroll', update, { passive: true });
+    update();
+    return () => el.removeEventListener('scroll', update);
+  }, [scrollRef]);
+
+  return (
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <div className="h-0.5 bg-neutral-200/60 rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-neutral-900 rounded-full origin-left"
+          style={{ scaleX: progress }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          ref={barRef}
+        />
+      </div>
+    </div>
+  );
+}
+
 function ProjectCard({
   project,
   locale,
@@ -218,8 +255,9 @@ function ProjectCard({
         alt={getLocalizedValue(project.title, locale)}
         fill
         loading="lazy"
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110 pointer-events-none"
         sizes="(max-width: 640px) 320px, (max-width: 1024px) 400px, 500px"
+        draggable={false}
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent transition-opacity duration-500" />

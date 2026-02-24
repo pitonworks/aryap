@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { projects } from '@/data/projects';
 import { getLocalizedValue, formatNumber } from '@/lib/utils';
+import { useDragScroll } from '@/lib/useDragScroll';
 
 const categoryKeys = ['all', 'residential', 'commercial', 'mixed'] as const;
 
@@ -16,9 +17,10 @@ export function InsightsSection() {
   const tp = useTranslations('projects');
   const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [activeCategory, setActiveCategory] = useState<string>('all');
+
+  const { scrollRef, isDragging, scrollTo } = useDragScroll({ momentum: 0.92, friction: 0.94 });
 
   const filtered = activeCategory === 'all'
     ? projects
@@ -29,15 +31,6 @@ export function InsightsSection() {
     residential: tp('filterResidential'),
     commercial: tp('filterCommercial'),
     mixed: tp('filterMixed'),
-  };
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    const amount = 400;
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -amount : amount,
-      behavior: 'smooth',
-    });
   };
 
   return (
@@ -102,11 +95,13 @@ export function InsightsSection() {
         </motion.div>
       </div>
 
-      {/* Horizontal scroll cards */}
+      {/* Horizontal scroll cards with drag */}
       <div className="relative">
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scrollbar-hide px-6 sm:px-8 lg:px-[calc((100vw-1280px)/2+2rem)] pb-4 snap-x snap-mandatory"
+          className={`flex gap-5 overflow-x-auto scrollbar-hide px-6 sm:px-8 lg:px-[calc((100vw-1280px)/2+2rem)] pb-4 select-none ${
+            isDragging ? '' : 'snap-x snap-mandatory'
+          }`}
         >
           {filtered.map((project, index) => (
             <motion.div
@@ -118,19 +113,24 @@ export function InsightsSection() {
                 delay: 0.15 + index * 0.08,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
+              className={`flex-shrink-0 w-[280px] sm:w-[320px] ${isDragging ? '' : 'snap-start'}`}
             >
               <Link
                 href={`/${locale}/projects/${project.slug}`}
                 className="group block"
+                onClick={(e) => {
+                  if (isDragging) e.preventDefault();
+                }}
+                draggable={false}
               >
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-all duration-500 group-hover:-translate-y-1">
                   <Image
                     src={project.image}
                     alt={getLocalizedValue(project.title, locale)}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
                     sizes="320px"
+                    draggable={false}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
@@ -168,25 +168,57 @@ export function InsightsSection() {
         </div>
       </div>
 
-      {/* Navigation arrows */}
+      {/* Navigation arrows + scroll progress */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mt-8">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button
-            onClick={() => scroll('left')}
+            onClick={() => scrollTo('left')}
             className="w-12 h-12 rounded-full border border-neutral-200 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] hover:scale-105 transition-all duration-300"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
-            onClick={() => scroll('right')}
+            onClick={() => scrollTo('right')}
             className="w-12 h-12 rounded-full border border-neutral-200 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] hover:scale-105 transition-all duration-300"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
+
+          {/* Scroll progress bar */}
+          <InsightsScrollProgress scrollRef={scrollRef} />
         </div>
       </div>
     </section>
+  );
+}
+
+function InsightsScrollProgress({ scrollRef }: { scrollRef: React.RefObject<HTMLDivElement | null> }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll <= 0) { setProgress(0); return; }
+      setProgress(el.scrollLeft / maxScroll);
+    };
+
+    el.addEventListener('scroll', update, { passive: true });
+    update();
+    return () => el.removeEventListener('scroll', update);
+  }, [scrollRef]);
+
+  return (
+    <div className="flex-1 h-0.5 bg-neutral-200/60 rounded-full overflow-hidden">
+      <motion.div
+        className="h-full bg-neutral-900 rounded-full origin-left"
+        style={{ scaleX: progress }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      />
+    </div>
   );
 }
