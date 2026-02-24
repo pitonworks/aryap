@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'motion/react';
@@ -79,12 +80,16 @@ export function Header() {
             {/* Logo */}
             <Link
               href={`/${locale}`}
-              className="relative group flex items-center"
+              className="flex items-center"
             >
-              <span className="text-2xl sm:text-3xl font-heading text-brand font-bold tracking-[0.2em]">
-                ARYAP
-              </span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand group-hover:w-full transition-all duration-500" />
+              <Image
+                src="/images/logo-black.webp"
+                alt="Aryap"
+                width={120}
+                height={32}
+                className="h-7 sm:h-8 w-auto"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
