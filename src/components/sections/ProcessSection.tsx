@@ -58,8 +58,8 @@ export function ProcessSection() {
                 </div>
 
                 {/* Icon */}
-                <div className="inline-flex group-hover:bg-neutral-900 group-hover:text-white transition-all duration-500 rounded-lg">
-                  <Icon className="w-6 h-6 text-neutral-400 mt-4 mb-3 group-hover:text-white transition-colors duration-500" />
+                <div className="inline-flex mt-4 mb-3">
+                  <Icon className="w-6 h-6 text-neutral-400" />
                 </div>
 
                 {/* Title */}

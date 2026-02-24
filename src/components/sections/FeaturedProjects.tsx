@@ -27,7 +27,7 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const { scrollRef, isDragging, scrollTo } = useDragScroll({ momentum: 0.92, friction: 0.94 });
+  const { scrollRef, isDragging, scrollTo } = useDragScroll({ friction: 0.96 });
 
   const filteredProjects = activeFilter === 'all'
     ? projects

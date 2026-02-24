@@ -20,7 +20,7 @@ export function InsightsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  const { scrollRef, isDragging, scrollTo } = useDragScroll({ momentum: 0.92, friction: 0.94 });
+  const { scrollRef, isDragging, scrollTo } = useDragScroll({ friction: 0.96 });
 
   const filtered = activeCategory === 'all'
     ? projects

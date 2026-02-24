@@ -3,25 +3,24 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
 
 interface DragScrollOptions {
-  momentum?: number;    // 0-1, how much momentum to carry (default 0.92)
-  friction?: number;    // deceleration per frame (default 0.95)
+  friction?: number;    // 0-1, deceleration per frame (higher = slides longer, default 0.97)
+  sensitivity?: number; // drag multiplier (default 1)
 }
 
 export function useDragScroll(options: DragScrollOptions = {}) {
-  const { momentum = 0.92, friction = 0.95 } = options;
+  const { friction = 0.97, sensitivity = 1 } = options;
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Internal state refs (no re-renders)
   const state = useRef({
     isDown: false,
     startX: 0,
     scrollLeft: 0,
-    lastX: 0,
     velocity: 0,
     animationId: 0,
     hasMoved: false,
-    lastTime: 0,
+    // Velocity tracking — last 4 samples for smooth average
+    samples: [] as { x: number; t: number }[],
   });
 
   const startDrag = useCallback((clientX: number) => {
@@ -33,9 +32,8 @@ export function useDragScroll(options: DragScrollOptions = {}) {
     state.current.hasMoved = false;
     state.current.startX = clientX;
     state.current.scrollLeft = el.scrollLeft;
-    state.current.lastX = clientX;
     state.current.velocity = 0;
-    state.current.lastTime = Date.now();
+    state.current.samples = [{ x: clientX, t: Date.now() }];
     setIsDragging(true);
   }, []);
 
@@ -44,59 +42,78 @@ export function useDragScroll(options: DragScrollOptions = {}) {
     const el = scrollRef.current;
     if (!el) return;
 
+    // Record sample for velocity averaging
     const now = Date.now();
-    const dt = Math.max(now - state.current.lastTime, 1);
-    const dx = clientX - state.current.lastX;
+    state.current.samples.push({ x: clientX, t: now });
+    // Keep only last 4 samples
+    if (state.current.samples.length > 4) {
+      state.current.samples.shift();
+    }
 
-    // Track velocity with time-weighted smoothing
-    state.current.velocity = dx / dt * 16; // normalize to ~60fps
-    state.current.lastX = clientX;
-    state.current.lastTime = now;
-
-    const walk = clientX - state.current.startX;
+    const walk = (clientX - state.current.startX) * sensitivity;
     if (Math.abs(walk) > 3) {
       state.current.hasMoved = true;
     }
 
     el.scrollLeft = state.current.scrollLeft - walk;
-  }, []);
+  }, [sensitivity]);
 
   const endDrag = useCallback(() => {
     if (!state.current.isDown) return;
     state.current.isDown = false;
 
-    // Apply momentum
     const el = scrollRef.current;
-    if (!el || Math.abs(state.current.velocity) < 0.5) {
+    const samples = state.current.samples;
+
+    if (!el || samples.length < 2) {
       setIsDragging(false);
       return;
     }
 
-    let vel = state.current.velocity * -8; // amplify and reverse direction
+    // Calculate velocity from averaged samples
+    const first = samples[0];
+    const last = samples[samples.length - 1];
+    const dt = last.t - first.t;
+
+    if (dt < 1 || dt > 300) {
+      // Too slow or stale — no momentum
+      setIsDragging(false);
+      return;
+    }
+
+    const dx = last.x - first.x;
+    // Pixels per millisecond, then scale to per-frame (~16ms)
+    let vel = -(dx / dt) * 16 * sensitivity;
+
+    // Clamp max velocity for gentle feel
+    const maxVel = 25;
+    vel = Math.max(-maxVel, Math.min(maxVel, vel));
+
+    if (Math.abs(vel) < 0.3) {
+      setIsDragging(false);
+      return;
+    }
 
     const applyMomentum = () => {
-      if (Math.abs(vel) < 0.5) {
+      vel *= friction;
+      if (Math.abs(vel) < 0.2) {
         setIsDragging(false);
         return;
       }
       el.scrollLeft += vel;
-      vel *= friction;
       state.current.animationId = requestAnimationFrame(applyMomentum);
     };
 
     state.current.animationId = requestAnimationFrame(applyMomentum);
 
-    // Delayed isDragging reset for click prevention
-    setTimeout(() => setIsDragging(false), 100);
-  }, [friction]);
+    setTimeout(() => setIsDragging(false), 80);
+  }, [friction, sensitivity]);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    // Mouse events
     const onMouseDown = (e: MouseEvent) => {
-      // Only left click
       if (e.button !== 0) return;
       startDrag(e.clientX);
       el.style.cursor = 'grabbing';
@@ -111,42 +128,25 @@ export function useDragScroll(options: DragScrollOptions = {}) {
 
     const onMouseUp = () => {
       if (!state.current.isDown) return;
-      el.style.cursor = 'grab';
+      el.style.cursor = '';
       el.style.userSelect = '';
       endDrag();
     };
 
     const onMouseLeave = () => {
       if (state.current.isDown) {
-        el.style.cursor = 'grab';
+        el.style.cursor = '';
         el.style.userSelect = '';
         endDrag();
       }
     };
 
-    // Touch events (for mobile momentum — native scroll handles basic touch)
-    const onTouchStart = (e: TouchEvent) => {
-      startDrag(e.touches[0].clientX);
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (!state.current.isDown) return;
-      moveDrag(e.touches[0].clientX);
-    };
-
-    const onTouchEnd = () => {
-      endDrag();
-    };
-
-    // Prevent click on children after drag
     const onClick = (e: MouseEvent) => {
       if (state.current.hasMoved) {
         e.preventDefault();
         e.stopPropagation();
       }
     };
-
-    el.style.cursor = 'grab';
 
     el.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
@@ -168,7 +168,7 @@ export function useDragScroll(options: DragScrollOptions = {}) {
   const scrollTo = useCallback((direction: 'left' | 'right') => {
     const el = scrollRef.current;
     if (!el) return;
-    const amount = 420;
+    const amount = 350;
     el.scrollBy({
       left: direction === 'left' ? -amount : amount,
       behavior: 'smooth',
