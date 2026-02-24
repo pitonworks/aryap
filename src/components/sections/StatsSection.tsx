@@ -63,44 +63,34 @@ export function StatsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section
-      ref={ref}
-      className="relative py-20 md:py-28"
-    >
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-dark to-brand-900" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+    <section ref={ref} className="py-20 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.labelKey}
-              initial={{ opacity: 0, y: 30 }}
-              animate={
-                isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
-              }
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{
-                duration: 0.6,
-                delay: index * 0.15,
+                duration: 0.5,
+                delay: index * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{
-                y: -6,
-                scale: 1.05,
-                borderColor: 'rgba(232, 168, 56, 0.3)',
-              }}
-              className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 lg:p-8 text-center cursor-pointer hover:bg-white/15 hover:shadow-accent-glow transition-all duration-500"
+              className="text-center"
             >
-              <div className="font-heading text-3xl sm:text-4xl md:text-5xl text-accent mb-2">
+              <div className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 mb-2">
                 <AnimatedCounter
                   value={stat.value}
                   suffix={stat.suffix}
                   isInView={isInView}
                 />
               </div>
-              <p className="text-white/70 text-sm sm:text-base font-body">
+              <p className="text-neutral-400 text-sm sm:text-base">
                 {t(stat.labelKey)}
               </p>
+              {index < stats.length - 1 && (
+                <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-12 w-px bg-neutral-100" />
+              )}
             </motion.div>
           ))}
         </div>

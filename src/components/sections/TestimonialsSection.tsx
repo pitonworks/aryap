@@ -23,20 +23,20 @@ function TestimonialCard({
 }) {
   return (
     <div className="flex-shrink-0 w-[320px] sm:w-[380px] mx-3">
-      <div className="glass-card-hover p-6 sm:p-8 h-full">
-        <Quote className="w-8 h-8 text-brand/20 mb-4" />
-        <p className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-6 font-body">
+      <div className="bg-white rounded-2xl border border-neutral-100 p-6 sm:p-8 h-full shadow-card hover:shadow-card-hover transition-all duration-500">
+        <Quote className="w-8 h-8 text-neutral-200 mb-4" />
+        <p className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-6">
           &ldquo;{t(`${nameKey}Quote`)}&rdquo;
         </p>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-brand-light flex items-center justify-center text-white text-sm font-semibold">
+          <div className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white text-sm font-semibold">
             {t(`${nameKey}Name`).charAt(0)}
           </div>
           <div>
-            <p className="text-sm font-semibold text-neutral-800">
+            <p className="text-sm font-semibold text-neutral-900">
               {t(`${nameKey}Name`)}
             </p>
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-neutral-400">
               {t(`${nameKey}Project`)}
             </p>
           </div>
@@ -52,32 +52,26 @@ export function TestimonialsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="relative py-20 md:py-28 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <section ref={ref} className="relative py-24 md:py-32 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center"
         >
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-neutral-800 mb-4">
-            {t('testimonialsTitle')}
-          </h2>
-          <p className="text-neutral-500 text-lg max-w-2xl mx-auto font-body">
+          <p className="section-label">{t('testimonialsTitle')}</p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900">
             {t('testimonialsSubtitle')}
-          </p>
+          </h2>
         </motion.div>
       </div>
 
-      {/* Marquee with edge fade */}
+      {/* Marquee */}
       <div className="relative">
-        {/* Edge masks */}
         <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        {/* Scrolling row */}
         <div className="flex animate-marquee hover:[animation-play-state:paused]">
-          {/* Double the items for seamless loop */}
           {[...testimonialKeys, ...testimonialKeys].map((key, i) => (
             <TestimonialCard key={`${key}-${i}`} nameKey={key} t={t} />
           ))}

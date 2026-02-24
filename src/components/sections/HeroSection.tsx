@@ -4,117 +4,125 @@ import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
 export function HeroSection() {
   const t = useTranslations('home');
+  const tc = useTranslations('common');
   const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
-  const titleLines = t('heroTitle').split('\n');
-
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const childVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-      },
-    },
-  };
-
   return (
-    <section
-      ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80)',
-        }}
-      />
+    <section ref={ref} className="bg-white pt-24 sm:pt-28">
+      {/* Full-width hero image */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-full aspect-[21/9] sm:aspect-[2.4/1] rounded-2xl sm:rounded-3xl overflow-hidden"
+        >
+          <Image
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"
+            alt="Aryap Construction"
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          {/* Gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/60 via-brand-dark/40 to-white" />
-
-      {/* Content */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        className="relative z-10 text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        {/* Glass container */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-glass-lg">
-          <motion.h1
-            variants={childVariants}
-            className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6"
-          >
-            {titleLines.map((line, index) => (
-              <span key={index}>
-                {index === 0 ? (
-                  <span className="text-white">{line}</span>
-                ) : (
-                  <span className="text-accent-light">{line}</span>
-                )}
-                {index < titleLines.length - 1 && <br />}
-              </span>
-            ))}
-          </motion.h1>
-
-          <motion.p
-            variants={childVariants}
-            className="text-white/80 text-lg sm:text-xl max-w-2xl mx-auto mb-10 font-body"
-          >
-            {t('heroSubtitle')}
-          </motion.p>
-
-          <motion.div variants={childVariants}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-block"
+          {/* Title on image */}
+          <div className="absolute inset-0 flex items-end p-6 sm:p-10 lg:p-14">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] tracking-tight max-w-4xl"
             >
+              {t('heroTitle').split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  {index === 0 && <br />}
+                </span>
+              ))}
+            </motion.h1>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Below image: description + stats + CTA */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Left: Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7"
+          >
+            <p className="text-neutral-500 text-lg sm:text-xl leading-relaxed mb-8 max-w-2xl">
+              {t('heroSubtitle')}
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
               <Link
                 href={`/${locale}/projects`}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-white/90 text-brand backdrop-blur-sm shadow-glass-lg hover:bg-white hover:shadow-brand-glow transition-all duration-500"
+                className="btn-primary group"
               >
                 {t('heroCta')}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
-            </motion.div>
+              <Link
+                href={`/${locale}/contact`}
+                className="btn-secondary"
+              >
+                {tc('contact')}
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Right: Small thumbnail + stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5"
+          >
+            {/* Small thumbnail image */}
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8">
+              <Image
+                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=75"
+                alt="Aryap Projects"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+            </div>
+
+            {/* Stats row */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">20+</p>
+                <p className="text-xs text-neutral-400 mt-0.5">{t('statsYears')}</p>
+              </div>
+              <div className="h-10 w-px bg-neutral-100" />
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">200K+</p>
+                <p className="text-xs text-neutral-400 mt-0.5">{t('statsArea')}</p>
+              </div>
+              <div className="h-10 w-px bg-neutral-100" />
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">1500+</p>
+                <p className="text-xs text-neutral-400 mt-0.5">{t('statsClients')}</p>
+              </div>
+            </div>
           </motion.div>
         </div>
-      </motion.div>
-
-      {/* Scroll-down indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8, delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <ChevronDown className="w-6 h-6 text-white/60" />
-        </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

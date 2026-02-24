@@ -52,9 +52,9 @@ const config: Config = {
         body: ['var(--font-poppins)', 'sans-serif'],
       },
       boxShadow: {
-        glass: '0 8px 32px rgba(0, 0, 0, 0.06)',
-        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.08)',
-        'glass-inset': 'inset 0 1px 1px rgba(255, 255, 255, 0.4)',
+        card: '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06)',
+        'card-hover': '0 10px 40px rgba(0,0,0,0.08)',
+        elevated: '0 20px 60px rgba(0,0,0,0.1)',
         soft: '0 2px 16px rgba(0, 0, 0, 0.04)',
         'soft-lg': '0 4px 24px rgba(0, 0, 0, 0.06)',
         'brand-glow': '0 4px 24px rgba(27, 58, 75, 0.15)',
