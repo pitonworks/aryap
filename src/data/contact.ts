@@ -8,16 +8,16 @@ export const contactInfo = {
   offices: {
     eskisehir: {
       address: {
-        tr: 'Ertugrulgazi Mh. Ozgurcan No:1A\nTepebasi/Eskisehir',
-        en: 'Ertugrulgazi Mh. Ozgurcan No:1A\nTepebasi/Eskisehir',
+        tr: 'Ertugrulgazi Mh. Özgürcan No:1A\nTepebaşı/Eskişehir',
+        en: 'Ertugrulgazi Mh. Özgürcan No:1A\nTepebaşı/Eskişehir',
       },
       phone: '+90 545 144 26 26',
       coordinates: { lat: 39.7767, lng: 30.5206 },
     },
     bursa: {
       address: {
-        tr: 'Ataevler Mahallesi Celik Sokak No:1\nNilufer/Bursa',
-        en: 'Ataevler Mahallesi Celik Sokak No:1\nNilufer/Bursa',
+        tr: 'Ataevler Mahallesi Çelik Sokak No:1\nNilüfer/Bursa',
+        en: 'Ataevler Mahallesi Çelik Sokak No:1\nNilüfer/Bursa',
       },
       phone: '+90 545 117 16 16',
       coordinates: { lat: 40.1885, lng: 29.0610 },

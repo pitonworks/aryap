@@ -23,13 +23,13 @@ function TestimonialCard({
 }) {
   return (
     <div className="flex-shrink-0 w-[320px] sm:w-[380px] mx-3">
-      <div className="bg-white rounded-2xl border border-neutral-100 p-6 sm:p-8 h-full shadow-card hover:shadow-card-hover transition-all duration-500">
+      <div className="bg-white rounded-2xl border border-neutral-100/80 p-6 sm:p-8 h-full shadow-card-hover hover:shadow-elevated hover:-translate-y-1 transition-all duration-500">
         <Quote className="w-8 h-8 text-neutral-200 mb-4" />
         <p className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-6">
           &ldquo;{t(`${nameKey}Quote`)}&rdquo;
         </p>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center text-white text-sm font-semibold">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-950 flex items-center justify-center text-white text-sm font-semibold">
             {t(`${nameKey}Name`).charAt(0)}
           </div>
           <div>

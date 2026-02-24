@@ -23,8 +23,8 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
 
   const tabLabels: Record<TabKey, string> = {
     general: locale === 'tr' ? 'Genel Bilgi' : 'General Info',
-    about: locale === 'tr' ? 'Hakkinda' : 'About',
-    features: locale === 'tr' ? 'Ozellikler' : 'Features',
+    about: locale === 'tr' ? 'Hakkında' : 'About',
+    features: locale === 'tr' ? 'Özellikler' : 'Features',
     gallery: locale === 'tr' ? 'Galeri' : 'Gallery',
   };
 
@@ -35,9 +35,9 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
   };
 
   const statusLabels: Record<string, string> = {
-    completed: locale === 'tr' ? 'Tamamlandi' : 'Completed',
+    completed: locale === 'tr' ? 'Tamamlandı' : 'Completed',
     ongoing: locale === 'tr' ? 'Devam Ediyor' : 'Ongoing',
-    upcoming: locale === 'tr' ? 'Yaklasan' : 'Upcoming',
+    upcoming: locale === 'tr' ? 'Yaklaşan' : 'Upcoming',
   };
 
   // Reset state when project changes
@@ -153,7 +153,7 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
 
                   {/* Developer */}
                   <p className="text-xs text-neutral-400 uppercase tracking-wider mb-2">
-                    Aryap Mutahitlik
+                    Aryap Müteahhitlik
                   </p>
 
                   {/* Title */}
@@ -171,7 +171,7 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
                     <div className="bg-neutral-50 rounded-xl p-3 text-center">
                       <Building2 className="w-4 h-4 text-neutral-400 mx-auto mb-1" />
                       <p className="text-sm font-semibold text-neutral-900">{project.units}</p>
-                      <p className="text-xs text-neutral-400">{locale === 'tr' ? 'Unite' : 'Units'}</p>
+                      <p className="text-xs text-neutral-400">{locale === 'tr' ? 'Ünite' : 'Units'}</p>
                     </div>
                     <div className="bg-neutral-50 rounded-xl p-3 text-center">
                       <div className="w-4 h-4 mx-auto mb-1 flex items-center justify-center">
@@ -185,7 +185,7 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
                     <div className="bg-neutral-50 rounded-xl p-3 text-center">
                       <Calendar className="w-4 h-4 text-neutral-400 mx-auto mb-1" />
                       <p className="text-sm font-semibold text-neutral-900">{project.year}</p>
-                      <p className="text-xs text-neutral-400">{locale === 'tr' ? 'Yil' : 'Year'}</p>
+                      <p className="text-xs text-neutral-400">{locale === 'tr' ? 'Yıl' : 'Year'}</p>
                     </div>
                   </div>
 
@@ -247,7 +247,7 @@ export function ProjectModal({ project, locale, onClose }: ProjectModalProps) {
                       className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white text-sm font-semibold rounded-full hover:bg-neutral-800 transition-colors duration-300"
                     >
                       <Eye className="w-4 h-4" />
-                      {locale === 'tr' ? 'Detayli Incele' : 'View Details'}
+                      {locale === 'tr' ? 'Detaylı İncele' : 'View Details'}
                     </Link>
                     {project.hasTour && (
                       <Link

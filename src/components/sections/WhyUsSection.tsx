@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { Shield, Clock, Handshake } from 'lucide-react';
@@ -29,7 +29,7 @@ export function WhyUsSection() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.12)]">
               <Image
                 src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"
                 alt="Aryap Quality"
@@ -77,7 +77,7 @@ export function WhyUsSection() {
                       delay: 0.3 + index * 0.15,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="flex gap-5 p-5 rounded-2xl hover:bg-neutral-50 transition-colors duration-300 group"
+                    className="flex gap-5 p-5 rounded-2xl hover:bg-neutral-50 hover:shadow-card transition-all duration-300 group"
                   >
                     <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center group-hover:bg-neutral-900 transition-all duration-500">
                       <Icon className="w-5 h-5 text-neutral-500 group-hover:text-white transition-colors duration-500" />

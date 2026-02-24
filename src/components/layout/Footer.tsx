@@ -83,7 +83,7 @@ export function Footer() {
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3 text-sm text-neutral-300">
                 <MapPin className="w-4 h-4 text-neutral-500 mt-0.5 flex-shrink-0" />
-                <span>Eskisehir / Bursa</span>
+                <span>Eskişehir / Bursa</span>
               </div>
               <a
                 href="tel:+905451442626"
@@ -109,7 +109,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Aryap. {t('allRightsReserved')}
           </p>
           <p className="text-xs text-neutral-600">
-            Eskisehir &middot; Bursa
+            Eskişehir &middot; Bursa
           </p>
         </div>
       </div>

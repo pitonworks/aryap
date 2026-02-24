@@ -1,96 +1,79 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useInView, animate } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 import { useTranslations } from 'next-intl';
 
-interface StatItem {
-  value: number;
-  suffix: string;
-  labelKey: string;
+function CountUp({ end, duration = 2000, inView }: { end: number; duration?: number; inView: boolean }) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = end / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [end, duration, inView]);
+  return <>{count}</>;
 }
 
-const stats: StatItem[] = [
+const stats = [
   { value: 20, suffix: '+', labelKey: 'statsYears' },
-  { value: 8, suffix: '', labelKey: 'statsProjects' },
-  { value: 200000, suffix: '+', labelKey: 'statsArea' },
+  { value: 8, suffix: '+', labelKey: 'statsProjects' },
+  { value: 200, suffix: 'K+', labelKey: 'statsArea' },
   { value: 1500, suffix: '+', labelKey: 'statsClients' },
 ];
-
-function formatStatNumber(num: number): string {
-  if (num >= 1000) {
-    return new Intl.NumberFormat('tr-TR').format(num);
-  }
-  return num.toString();
-}
-
-function AnimatedCounter({
-  value,
-  suffix,
-  isInView,
-}: {
-  value: number;
-  suffix: string;
-  isInView: boolean;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-
-    const controls = animate(0, value, {
-      duration: 2,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (latest) => {
-        setDisplayValue(Math.round(latest));
-      },
-    });
-
-    return () => controls.stop();
-  }, [isInView, value]);
-
-  return (
-    <span>
-      {formatStatNumber(displayValue)}
-      {suffix}
-    </span>
-  );
-}
 
 export function StatsSection() {
   const t = useTranslations('home');
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section ref={ref} className="py-20 md:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section ref={ref} className="py-20 md:py-28 bg-neutral-900 text-white relative overflow-hidden">
+      {/* Subtle grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <h2 className="font-heading text-3xl md:text-4xl font-bold text-white text-center mb-16">
+          {t('statsTitle')}
+        </h2>
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.labelKey}
               initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{
                 duration: 0.5,
-                delay: index * 0.1,
+                delay: index * 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="text-center"
+              className="text-center group"
             >
-              <div className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 mb-2">
-                <AnimatedCounter
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  isInView={isInView}
-                />
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white group-hover:text-accent transition-colors duration-300">
+                <CountUp end={stat.value} inView={inView} />
+                {stat.suffix}
               </div>
-              <p className="text-neutral-400 text-sm sm:text-base">
+              <div className="w-12 h-0.5 bg-white/20 mx-auto my-4 group-hover:w-20 group-hover:bg-accent transition-all duration-500" />
+              <p className="text-sm text-neutral-400 group-hover:text-neutral-300 transition-colors duration-300">
                 {t(stat.labelKey)}
               </p>
-              {index < stats.length - 1 && (
-                <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-12 w-px bg-neutral-100" />
-              )}
             </motion.div>
           ))}
         </div>

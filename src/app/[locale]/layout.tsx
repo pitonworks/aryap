@@ -18,19 +18,19 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aryap Insaat | Insaatta Kalite, Yasamda Konfor',
-    template: '%s | Aryap Insaat',
+    default: 'Aryap İnşaat | İnşaatta Kalite, Yaşamda Konfor',
+    template: '%s | Aryap İnşaat',
   },
-  description: 'Aryap Insaat - 20 yillik tecrubesiyle konut, ticari ve karma kullanim projeleri. Insaatta kalite, yasamda konfor.',
-  keywords: ['insaat', 'emlak', 'konut', 'eskisehir', 'bursa', 'aryap', 'construction'],
-  authors: [{ name: 'Aryap Insaat' }],
+  description: 'Aryap İnşaat - 20 yıllık tecrübesiyle konut, ticari ve karma kullanım projeleri. İnşaatta kalite, yaşamda konfor.',
+  keywords: ['inşaat', 'emlak', 'konut', 'eskişehir', 'bursa', 'aryap', 'construction'],
+  authors: [{ name: 'Aryap İnşaat' }],
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
     alternateLocale: 'en_US',
-    siteName: 'Aryap Insaat',
-    title: 'Aryap Insaat | Insaatta Kalite, Yasamda Konfor',
-    description: 'Aryap Insaat - Insaatta kalite, yasamda konfor',
+    siteName: 'Aryap İnşaat',
+    title: 'Aryap İnşaat | İnşaatta Kalite, Yaşamda Konfor',
+    description: 'Aryap İnşaat - İnşaatta kalite, yaşamda konfor',
   },
   robots: { index: true, follow: true },
 };
@@ -55,7 +55,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={poppins.variable}>
-      <body className="bg-gradient-to-b from-neutral-50 to-white text-neutral-800 font-body antialiased">
+      <body className="bg-white text-neutral-800 font-body antialiased">
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="min-h-screen">{children}</main>

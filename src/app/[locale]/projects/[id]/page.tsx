@@ -1,9 +1,9 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -16,6 +16,8 @@ import {
   ArrowLeft,
   Map,
   Eye,
+  ArrowUpRight,
+  ChevronRight,
 } from 'lucide-react';
 import { projects, type ProjectStatus, type ProjectType } from '@/data/projects';
 import { getLocalizedValue, formatNumber } from '@/lib/utils';
@@ -62,9 +64,9 @@ const statusBgColors: Record<ProjectStatus, string> = {
 };
 
 const statusBadgeBg: Record<ProjectStatus, string> = {
-  completed: 'bg-green-50/80',
-  ongoing: 'bg-yellow-50/80',
-  upcoming: 'bg-blue-50/80',
+  completed: 'bg-green-50',
+  ongoing: 'bg-yellow-50',
+  upcoming: 'bg-blue-50',
 };
 
 export default function ProjectDetailPage() {
@@ -73,21 +75,30 @@ export default function ProjectDetailPage() {
   const locale = useLocale();
   const params = useParams();
   const slug = params.id as string;
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     return (
       <section className="pt-40 pb-20 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-card inline-block px-12 py-10">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="card inline-block px-12 py-10">
             <h1 className="text-3xl font-heading font-bold mb-4 text-neutral-900">
               {tc('notFound')}
             </h1>
-            <p className="text-neutral-500 mb-8">{tc('notFoundDesc')}</p>
+            <p className="text-neutral-400 mb-8">{tc('notFoundDesc')}</p>
             <Link
               href={`/${locale}/projects`}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-semibold rounded-2xl hover:bg-brand-light transition-colors"
+              className="btn-primary"
             >
               <ArrowLeft className="w-4 h-4" />
               {tc('projects')}
@@ -117,29 +128,32 @@ export default function ProjectDetailPage() {
   };
 
   const features = getLocalizedValue(project.features, locale);
+  const allImages = [project.image, ...project.gallery];
   const relatedProjects = projects
     .filter((p) => p.type === project.type && p.id !== project.id)
     .slice(0, 3);
 
   return (
     <>
-      {/* Hero Image Banner */}
-      <section className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] min-h-[400px]">
-        <Image
-          src={project.image}
-          alt={getLocalizedValue(project.title, locale)}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent" />
+      {/* Hero Image Banner with Parallax */}
+      <section ref={heroRef} className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] min-h-[400px] overflow-hidden">
+        <motion.div style={{ scale: heroScale }} className="absolute inset-0">
+          <Image
+            src={project.image}
+            alt={getLocalizedValue(project.title, locale)}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        </motion.div>
 
         {/* Back Button */}
         <div className="absolute top-28 left-4 sm:left-6 lg:left-8 z-10">
           <Link
             href={`/${locale}/projects`}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white/70 backdrop-blur-xl border border-white/40 rounded-2xl text-neutral-600 hover:text-brand hover:border-brand/30 shadow-glass transition-all duration-300"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white/20 backdrop-blur-sm border border-white/20 rounded-full text-white/80 hover:text-white hover:bg-white/30 shadow-card transition-all duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
             {tc('projects')}
@@ -147,203 +161,226 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-12">
+        <motion.div style={{ opacity: heroOpacity }} className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-12">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="flex items-center gap-3 mb-3">
-                <span
-                  className={`status-badge backdrop-blur-sm ${statusBadgeBg[project.status]} ${statusColors[project.status]}`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${statusBgColors[project.status]}`}
-                  />
+              {/* Breadcrumb */}
+              <div className="flex items-center gap-2 text-sm text-neutral-400 mb-3">
+                <Link href={`/${locale}/projects`} className="hover:text-neutral-900 transition-colors">{locale === 'tr' ? 'Projeler' : 'Projects'}</Link>
+                <ChevronRight className="w-3.5 h-3.5" />
+                <span>{getTypeLabel(project.type)}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+                <span className="text-white font-medium">{getLocalizedValue(project.title, locale)}</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className={`status-badge ${statusBadgeBg[project.status]} ${statusColors[project.status]}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${statusBgColors[project.status]}`} />
                   {getStatusLabel(project.status)}
                 </span>
-                <span className="status-badge bg-brand/10 backdrop-blur-sm text-brand">
+                <span className="status-badge bg-neutral-100 text-neutral-600">
                   {getTypeLabel(project.type)}
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-2 text-neutral-900">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-2 text-white">
                 {getLocalizedValue(project.title, locale)}
               </h1>
-              <div className="flex items-center gap-2 text-neutral-600">
-                <MapPin className="w-4 h-4 text-brand" />
+              <div className="flex items-center gap-2 text-white/70">
+                <MapPin className="w-4 h-4" />
                 <span>{getLocalizedValue(project.location, locale)}</span>
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Info Bar */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 border-b border-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <AnimatedSection>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              <div className="info-chip">
-                <Building2 className="w-5 h-5 text-brand mx-auto mb-2" />
-                <p className="text-xs text-neutral-500 mb-1">{t('type')}</p>
-                <p className="text-sm font-semibold text-neutral-900">{getTypeLabel(project.type)}</p>
-              </div>
-              <div className="info-chip">
-                <div className="flex items-center justify-center gap-1.5 mb-2">
-                  <span
-                    className={`w-2 h-2 rounded-full ${statusBgColors[project.status]}`}
-                  />
+              {[
+                { icon: Building2, label: t('type'), value: getTypeLabel(project.type) },
+                { icon: null, label: t('status'), value: getStatusLabel(project.status), statusDot: true },
+                { icon: Calendar, label: t('year'), value: String(project.year) },
+                { icon: Ruler, label: t('area'), value: `${formatNumber(project.area)} m²` },
+                { icon: Users, label: t('units'), value: String(project.units) },
+              ].map((item, index) => (
+                <div key={index} className="bg-neutral-50 rounded-xl p-4 text-center hover:shadow-card transition-all duration-300">
+                  {item.statusDot ? (
+                    <div className="flex items-center justify-center gap-1.5 mb-2">
+                      <span className={`w-2 h-2 rounded-full ${statusBgColors[project.status]}`} />
+                    </div>
+                  ) : item.icon ? (
+                    <item.icon className="w-5 h-5 text-neutral-400 mx-auto mb-2" />
+                  ) : null}
+                  <p className="text-xs text-neutral-400 mb-1">{item.label}</p>
+                  <p className={`text-sm font-semibold ${item.statusDot ? statusColors[project.status] : 'text-neutral-900'}`}>
+                    {item.value}
+                  </p>
                 </div>
-                <p className="text-xs text-neutral-500 mb-1">{t('status')}</p>
-                <p className={`text-sm font-semibold ${statusColors[project.status]}`}>
-                  {getStatusLabel(project.status)}
-                </p>
-              </div>
-              <div className="info-chip">
-                <Calendar className="w-5 h-5 text-brand mx-auto mb-2" />
-                <p className="text-xs text-neutral-500 mb-1">{t('year')}</p>
-                <p className="text-sm font-semibold text-neutral-900">{project.year}</p>
-              </div>
-              <div className="info-chip">
-                <Ruler className="w-5 h-5 text-brand mx-auto mb-2" />
-                <p className="text-xs text-neutral-500 mb-1">{t('area')}</p>
-                <p className="text-sm font-semibold text-neutral-900">
-                  {formatNumber(project.area)} {t('sqm')}
-                </p>
-              </div>
-              <div className="info-chip">
-                <Users className="w-5 h-5 text-brand mx-auto mb-2" />
-                <p className="text-xs text-neutral-500 mb-1">{t('units')}</p>
-                <p className="text-sm font-semibold text-neutral-900">{project.units}</p>
-              </div>
+              ))}
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Description */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <h2 className="text-2xl font-heading font-bold mb-6 text-neutral-900">
-              {t('description')}
-            </h2>
-            <p className="text-neutral-600 leading-relaxed max-w-3xl text-lg">
-              {getLocalizedValue(project.description, locale)}
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* Description + Sidebar */}
+      <section className="py-20 sm:py-28">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
+            {/* Description */}
+            <div className="lg:col-span-2">
+              <AnimatedSection>
+                <p className="section-label">{locale === 'tr' ? 'Proje Hakkında' : 'About Project'}</p>
+                <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6 text-neutral-900">
+                  {t('description')}
+                </h2>
+                <p className="text-neutral-500 leading-relaxed text-lg">
+                  {getLocalizedValue(project.description, locale)}
+                </p>
+              </AnimatedSection>
 
-      {/* Features */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
-              {t('features')}
-            </h2>
-          </AnimatedSection>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {features.map((feature, index) => (
-              <AnimatedSection key={index} delay={index * 0.05}>
-                <div className="glass-card-solid flex items-center gap-3 p-4">
-                  <CheckCircle className="w-5 h-5 text-brand flex-shrink-0" />
-                  <span className="text-neutral-700">{feature}</span>
+              {/* Features */}
+              <AnimatedSection delay={0.2} className="mt-12">
+                <h3 className="text-xl font-heading font-bold mb-6 text-neutral-900">
+                  {t('features')}
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                      className="flex items-center gap-3 p-4 bg-neutral-50 rounded-xl hover:bg-neutral-100 transition-colors duration-300"
+                    >
+                      <CheckCircle className="w-4 h-4 text-neutral-400 flex-shrink-0" />
+                      <span className="text-neutral-700 text-sm">{feature}</span>
+                    </motion.div>
+                  ))}
                 </div>
               </AnimatedSection>
-            ))}
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-32 space-y-6">
+                {/* Progress (if ongoing) */}
+                {project.status === 'ongoing' && (
+                  <AnimatedSection>
+                    <div className="card p-6">
+                      <h3 className="text-sm font-semibold text-neutral-900 mb-4">{t('progress')}</h3>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-neutral-400 text-sm">
+                          {getLocalizedValue(project.title, locale)}
+                        </span>
+                        <span className="text-neutral-900 font-bold text-lg">
+                          {project.progress}%
+                        </span>
+                      </div>
+                      <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
+                        <ProgressBarFill value={project.progress} />
+                      </div>
+                    </div>
+                  </AnimatedSection>
+                )}
+
+                {/* Quick Actions */}
+                <AnimatedSection delay={0.1}>
+                  <div className="space-y-3">
+                    <Link
+                      href={`/${locale}/map`}
+                      className="flex items-center justify-between w-full px-6 py-4 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 transition-colors duration-300 shadow-card hover:shadow-elevated group"
+                    >
+                      <span className="flex items-center gap-3 text-sm font-semibold">
+                        <Map className="w-5 h-5" />
+                        {t('onMap')}
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    </Link>
+                    {project.hasTour && (
+                      <Link
+                        href={`/${locale}/virtual-tour`}
+                        className="flex items-center justify-between w-full px-6 py-4 bg-white border border-neutral-200 rounded-xl text-neutral-700 hover:border-neutral-400 hover:shadow-card transition-all duration-300 group"
+                      >
+                        <span className="flex items-center gap-3 text-sm font-semibold">
+                          <Eye className="w-5 h-5" />
+                          {t('virtualTour')}
+                        </span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                      </Link>
+                    )}
+                  </div>
+                </AnimatedSection>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Progress Section (Ongoing Only) */}
-      {project.status === 'ongoing' && (
-        <section className="py-16 sm:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection>
-              <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
-                {t('progress')}
-              </h2>
-              <div className="max-w-xl glass-card p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-neutral-500">
-                    {getLocalizedValue(project.title, locale)}
-                  </span>
-                  <span className="text-brand font-bold text-lg">
-                    {project.progress}%
-                  </span>
-                </div>
-                <div className="w-full h-4 bg-neutral-100/60 rounded-full overflow-hidden">
-                  <ProgressBarFill value={project.progress} />
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </section>
-      )}
 
       {/* Gallery */}
       {project.gallery.length > 0 && (
-        <section className="py-16 sm:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection>
-              <h2 className="text-2xl font-heading font-bold mb-8 text-neutral-900">
+        <section className="py-20 sm:py-28 bg-neutral-900">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <AnimatedSection className="mb-10">
+              <p className="section-label text-white/60">{locale === 'tr' ? 'Galeri' : 'Gallery'}</p>
+              <h2 className="text-2xl md:text-3xl font-heading font-bold text-white">
                 {t('gallery')}
               </h2>
             </AnimatedSection>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-              {project.gallery.map((image, index) => (
-                <AnimatedSection key={index} delay={index * 0.1}>
-                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden group">
-                    <Image
-                      src={image}
-                      alt={`${getLocalizedValue(project.title, locale)} - ${index + 1}`}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                  </div>
-                </AnimatedSection>
+
+            {/* Featured image */}
+            <AnimatedSection delay={0.1}>
+              <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-4 shadow-[0_25px_80px_rgba(0,0,0,0.3)]">
+                <Image
+                  src={allImages[activeGalleryIndex]}
+                  alt={`${getLocalizedValue(project.title, locale)} - ${activeGalleryIndex + 1}`}
+                  fill
+                  className="object-cover transition-all duration-500"
+                  sizes="100vw"
+                />
+              </div>
+            </AnimatedSection>
+
+            {/* Thumbnail strip */}
+            <div className="flex gap-3 overflow-x-auto scrollbar-hide py-2">
+              {allImages.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveGalleryIndex(index)}
+                  className={`flex-shrink-0 relative w-24 h-16 sm:w-32 sm:h-20 rounded-xl overflow-hidden transition-all duration-300 ${
+                    index === activeGalleryIndex
+                      ? 'ring-2 ring-white opacity-100 shadow-card'
+                      : 'opacity-60 hover:opacity-80'
+                  }`}
+                >
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="128px"
+                  />
+                </button>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Action Buttons */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link
-                href={`/${locale}/map`}
-                className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-brand text-white hover:bg-brand-light shadow-brand-glow transition-all duration-300"
-              >
-                <Map className="w-5 h-5" />
-                {t('onMap')}
-              </Link>
-              {project.hasTour && (
-                <Link
-                  href={`/${locale}/virtual-tour`}
-                  className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold rounded-2xl bg-white/60 backdrop-blur-xl border border-white/40 text-brand shadow-glass hover:bg-white/80 hover:shadow-glass-lg transition-all duration-300"
-                >
-                  <Eye className="w-5 h-5" />
-                  {t('virtualTour')}
-                </Link>
-              )}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
-        <section className="py-16 sm:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-20 sm:py-28">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <AnimatedSection className="mb-10">
-              <h2 className="text-2xl font-heading font-bold text-neutral-900">
+              <p className="section-label">{locale === 'tr' ? 'Benzer Projeler' : 'Related Projects'}</p>
+              <h2 className="text-2xl md:text-3xl font-heading font-bold text-neutral-900">
                 {t('relatedProjects')}
               </h2>
             </AnimatedSection>
@@ -355,22 +392,28 @@ export default function ProjectDetailPage() {
                     href={`/${locale}/projects/${related.slug}`}
                     className="group block"
                   >
-                    <div className="glass-card-hover overflow-hidden">
-                      <div className="relative aspect-[16/10] overflow-hidden rounded-t-3xl">
+                    <div className="card-hover overflow-hidden">
+                      <div className="relative aspect-[16/10] overflow-hidden">
                         <Image
                           src={related.image}
                           alt={getLocalizedValue(related.title, locale)}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                        <div className="absolute top-4 right-4">
+                          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-card">
+                            <ArrowUpRight className="w-5 h-5 text-neutral-900" />
+                          </div>
+                        </div>
                       </div>
                       <div className="p-5">
-                        <h3 className="text-lg font-heading font-bold mb-1 text-neutral-900 group-hover:text-brand transition-colors duration-300">
+                        <h3 className="text-lg font-heading font-semibold mb-1 text-neutral-900 group-hover:text-neutral-600 transition-colors duration-300">
                           {getLocalizedValue(related.title, locale)}
                         </h3>
-                        <p className="text-neutral-500 text-sm">
-                          {getLocalizedValue(related.location, locale)}
+                        <p className="text-neutral-400 text-sm">
+                          {getLocalizedValue(related.location, locale)} · {formatNumber(related.area)} m²
                         </p>
                       </div>
                     </div>
@@ -397,7 +440,7 @@ function ProgressBarFill({ value }: { value: number }) {
         initial={{ width: 0 }}
         animate={isInView ? { width: `${clamped}%` } : { width: 0 }}
         transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="h-full rounded-full bg-gradient-to-r from-brand to-brand-light"
+        className="h-full rounded-full bg-neutral-900"
       />
     </div>
   );

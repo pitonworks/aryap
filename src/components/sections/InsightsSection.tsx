@@ -58,7 +58,7 @@ export function InsightsSection() {
           </div>
           <Link
             href={`/${locale}/projects`}
-            className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white text-sm font-semibold rounded-full hover:bg-neutral-800 transition-colors duration-300 group"
+            className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white text-sm font-semibold rounded-full shadow-card hover:shadow-elevated hover:bg-neutral-800 hover:-translate-y-0.5 transition-all duration-300 group"
           >
             {tp('title')}
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
@@ -124,7 +124,7 @@ export function InsightsSection() {
                 href={`/${locale}/projects/${project.slug}`}
                 className="group block"
               >
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4">
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-all duration-500 group-hover:-translate-y-1">
                   <Image
                     src={project.image}
                     alt={getLocalizedValue(project.title, locale)}
@@ -136,7 +136,7 @@ export function InsightsSection() {
 
                   {/* Arrow button */}
                   <div className="absolute top-4 right-4">
-                    <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-elevated">
                       <ArrowUpRight className="w-5 h-5 text-neutral-900" />
                     </div>
                   </div>
@@ -145,7 +145,7 @@ export function InsightsSection() {
                   <div className="absolute bottom-4 left-4">
                     <span className="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm text-neutral-700 text-xs font-medium rounded-full">
                       {project.status === 'completed'
-                        ? (locale === 'tr' ? 'Tamamlandi' : 'Completed')
+                        ? (locale === 'tr' ? 'Tamamlandı' : 'Completed')
                         : (locale === 'tr' ? 'Devam Ediyor' : 'Ongoing')}
                     </span>
                   </div>
@@ -159,7 +159,7 @@ export function InsightsSection() {
                     {getLocalizedValue(project.title, locale)}
                   </h3>
                   <p className="text-sm text-neutral-400">
-                    {formatNumber(project.area)} m² · {project.units} {locale === 'tr' ? 'unite' : 'units'}
+                    {formatNumber(project.area)} m² · {project.units} {locale === 'tr' ? 'ünite' : 'units'}
                   </p>
                 </div>
               </Link>
@@ -173,14 +173,14 @@ export function InsightsSection() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => scroll('left')}
-            className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all duration-300"
+            className="w-12 h-12 rounded-full border border-neutral-200 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] hover:scale-105 transition-all duration-300"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all duration-300"
+            className="w-12 h-12 rounded-full border border-neutral-200 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] hover:scale-105 transition-all duration-300"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-5 h-5" />

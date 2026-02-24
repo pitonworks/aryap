@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Aryap Mutahitlik & Emlak',
-  description: 'Guvenilir insaat ve emlak cozumleri',
+  title: 'Aryap Müteahhitlik & Emlak',
+  description: 'Güvenilir inşaat ve emlak çözümleri',
 };
 
 export default function RootLayout({

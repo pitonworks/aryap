@@ -74,7 +74,7 @@ function ProjectCard({
             </div>
             <h3 className="font-heading text-xl text-white mb-2">{title}</h3>
             <div className="flex items-center gap-2 text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span>{locale === 'tr' ? 'Projeyi Incele' : 'View Project'}</span>
+              <span>{locale === 'tr' ? 'Projeyi İncele' : 'View Project'}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>

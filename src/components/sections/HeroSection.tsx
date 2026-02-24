@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, useScroll, useTransform } from 'motion/react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,24 +14,34 @@ export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   return (
     <section ref={ref} className="bg-white pt-24 sm:pt-28">
       {/* Full-width hero image */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div ref={heroRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full aspect-[21/9] sm:aspect-[2.4/1] rounded-2xl sm:rounded-3xl overflow-hidden"
+          className="relative w-full aspect-[21/9] sm:aspect-[2.4/1] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.12)]"
         >
-          <Image
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"
-            alt="Aryap Construction"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
+          <motion.div style={{ y: imageY, scale: imageScale }} className="absolute inset-0">
+            <Image
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"
+              alt="Aryap Construction"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+          </motion.div>
           {/* Gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
@@ -42,7 +52,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] tracking-tight max-w-4xl"
+              className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] tracking-tight max-w-4xl drop-shadow-lg"
             >
               {t('heroTitle').split('\n').map((line, index) => (
                 <span key={index}>
@@ -93,32 +103,36 @@ export function HeroSection() {
             className="lg:col-span-5"
           >
             {/* Small thumbnail image */}
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8">
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8 shadow-elevated hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:scale-[1.02] transition-all duration-500 group">
               <Image
                 src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=75"
                 alt="Aryap Projects"
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />
             </div>
 
             {/* Stats row */}
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">20+</p>
-                <p className="text-xs text-neutral-400 mt-0.5">{t('statsYears')}</p>
-              </div>
-              <div className="h-10 w-px bg-neutral-100" />
-              <div>
-                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">200K+</p>
-                <p className="text-xs text-neutral-400 mt-0.5">{t('statsArea')}</p>
-              </div>
-              <div className="h-10 w-px bg-neutral-100" />
-              <div>
-                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">1500+</p>
-                <p className="text-xs text-neutral-400 mt-0.5">{t('statsClients')}</p>
-              </div>
+              {[
+                { value: '20+', label: t('statsYears') },
+                { value: '200K+', label: t('statsArea') },
+                { value: '1500+', label: t('statsClients') },
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                  transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
+                  className="group cursor-default"
+                >
+                  <p className="text-2xl sm:text-3xl font-bold text-neutral-900 group-hover:scale-110 transition-transform duration-300 origin-bottom">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-neutral-400 mt-0.5">{stat.label}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
