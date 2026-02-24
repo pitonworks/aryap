@@ -47,7 +47,7 @@ function ProjectCard({
           rotateY: tilt.rotateY,
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="group relative rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-lg transition-shadow duration-500 cursor-pointer"
+        className="group relative rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-shadow duration-500 cursor-pointer"
         style={{ transformStyle: 'preserve-3d' }}
       >
         <Link href={`/${locale}/projects/${project.slug}`}>

@@ -13,9 +13,9 @@ interface GlassCardProps {
 }
 
 const variantStyles: Record<string, string> = {
-  glass: 'bg-white/70 backdrop-blur-xl border border-white/40 shadow-glass',
-  solid: 'bg-white/90 backdrop-blur-xl border border-neutral-200/60 shadow-soft',
-  dark: 'bg-brand-dark/80 backdrop-blur-xl border border-white/10 shadow-glass',
+  glass: 'bg-white border border-neutral-100/80 shadow-card-hover',
+  solid: 'bg-white border border-neutral-200/60 shadow-card-hover',
+  dark: 'bg-neutral-900 border border-neutral-800 shadow-elevated text-white',
 };
 
 const paddingStyles: Record<string, string> = {
@@ -42,7 +42,7 @@ export default function GlassCard({
         'rounded-3xl',
         variantStyles[variant],
         paddingStyles[padding],
-        hover && 'hover:shadow-glass-lg hover:border-white/60 transition-all duration-300',
+        hover && 'hover:shadow-elevated hover:-translate-y-1 transition-all duration-300',
         onClick && 'cursor-pointer',
         className
       )}

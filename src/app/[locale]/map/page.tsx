@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 const MapView = dynamic(() => import('@/components/map/MapView'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[600px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl flex items-center justify-center shadow-glass">
+    <div className="w-full h-[600px] bg-white rounded-2xl border border-neutral-100/80 flex items-center justify-center shadow-elevated">
       <div className="w-12 h-12 border-4 border-neutral-200 border-t-brand rounded-full animate-spin" />
     </div>
   ),
@@ -74,8 +74,8 @@ export default function MapPage() {
                 onClick={() => setTypeFilter(f.key)}
                 className={
                   typeFilter === f.key
-                    ? 'filter-pill-active'
-                    : 'filter-pill-inactive'
+                    ? 'filter-tab-active'
+                    : 'filter-tab-inactive'
                 }
               >
                 {f.label}
@@ -104,7 +104,7 @@ export default function MapPage() {
               >
                 <Link
                   href={`/${locale}/projects/${project.slug}`}
-                  className="block p-4 glass-card-hover group"
+                  className="block p-4 card-hover group"
                 >
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-brand flex-shrink-0 mt-0.5" />

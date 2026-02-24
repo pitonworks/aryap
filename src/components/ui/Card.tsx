@@ -29,8 +29,8 @@ export default function Card({
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       onClick={onClick}
       className={cn(
-        'bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-glass',
-        'hover:border-white/60 hover:shadow-glass-lg transition-all duration-300',
+        'bg-white border border-neutral-100/80 rounded-2xl overflow-hidden shadow-card-hover',
+        'hover:shadow-elevated hover:-translate-y-1 transition-all duration-300',
         onClick && 'cursor-pointer',
         className
       )}

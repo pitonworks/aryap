@@ -23,7 +23,7 @@ const variantStyles: Record<string, string> = {
   ghost:
     'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100',
   glass:
-    'bg-white/60 backdrop-blur-xl border border-white/40 text-neutral-800 font-semibold shadow-glass hover:bg-white/80 hover:shadow-glass-lg',
+    'bg-white border border-neutral-200 text-neutral-800 font-semibold shadow-card-hover hover:bg-neutral-50 hover:shadow-elevated',
   accent:
     'bg-accent text-white font-semibold shadow-accent-glow hover:bg-accent-dark',
 };

@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic';
 const PanoramaViewer = dynamic(() => import('@/components/tour/PanoramaViewer'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[500px] bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl flex items-center justify-center shadow-glass">
+    <div className="w-full h-[500px] bg-white rounded-2xl border border-neutral-100/80 flex items-center justify-center shadow-elevated">
       <div className="w-12 h-12 border-4 border-neutral-200 border-t-brand rounded-full animate-spin" />
     </div>
   ),
@@ -69,8 +69,8 @@ export default function VirtualTourPage() {
                   onClick={() => { setSelectedTourIdx(i); setSelectedRoomIdx(0); }}
                   className={
                     selectedTourIdx === i
-                      ? 'filter-pill-active'
-                      : 'filter-pill-inactive'
+                      ? 'filter-tab-active'
+                      : 'filter-tab-inactive'
                   }
                 >
                   {project ? getLocalizedValue(project.title, locale) : tour.projectSlug}
@@ -92,10 +92,10 @@ export default function VirtualTourPage() {
                 <button
                   key={room.id}
                   onClick={() => setSelectedRoomIdx(i)}
-                  className={`px-3 py-1.5 rounded-xl text-sm transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all duration-300 ${
                     selectedRoomIdx === i
-                      ? 'bg-brand/10 text-brand border border-brand/30 font-medium'
-                      : 'bg-white/60 backdrop-blur-sm text-neutral-600 hover:bg-white/80 border border-white/40'
+                      ? 'bg-brand/10 text-brand border border-brand/20 font-medium shadow-[0_2px_8px_rgba(27,58,75,0.1)]'
+                      : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-neutral-200'
                   }`}
                 >
                   {getLocalizedValue(room.name, locale)}
@@ -117,7 +117,7 @@ export default function VirtualTourPage() {
                 title={getLocalizedValue(selectedRoom.name, locale)}
               />
             ) : (
-              <div className="w-full h-[500px] glass-card flex items-center justify-center">
+              <div className="w-full h-[500px] card flex items-center justify-center">
                 <p className="text-neutral-500">{t('noTourAvailable')}</p>
               </div>
             )}
