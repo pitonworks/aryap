@@ -77,7 +77,7 @@ export function WhyUsSection() {
                       delay: 0.3 + index * 0.15,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="flex gap-5 p-5 rounded-2xl hover:bg-neutral-50 hover:shadow-card transition-all duration-300 group"
+                    className="flex gap-5 p-5 rounded-2xl bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-neutral-100/60 hover:shadow-[0_12px_35px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-400 group"
                   >
                     <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center group-hover:bg-neutral-900 transition-all duration-500">
                       <Icon className="w-5 h-5 text-neutral-500 group-hover:text-white transition-colors duration-500" />

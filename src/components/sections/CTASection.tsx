@@ -70,7 +70,7 @@ export function CTASection() {
           </Link>
           <Link
             href={`/${locale}/projects`}
-            className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white font-semibold rounded-full shadow-[0_4px_20px_rgba(255,255,255,0.08)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.15)] hover:bg-white/10 hover:border-white/50 hover:-translate-y-0.5 transition-all duration-300"
           >
             {t('heroCta')}
           </Link>

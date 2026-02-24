@@ -20,7 +20,7 @@ const partners = [
 function PartnerLogo({ name }: { name: string }) {
   return (
     <div className="flex-shrink-0 mx-6 sm:mx-10">
-      <div className="flex items-center justify-center h-12 px-8 rounded-full bg-white shadow-card border border-neutral-100/50 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-500 cursor-default">
+      <div className="flex items-center justify-center h-12 px-8 rounded-full bg-white shadow-[0_3px_15px_rgba(0,0,0,0.06)] border border-neutral-100/50 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-500 cursor-default">
         <span className="text-sm font-semibold text-neutral-700 whitespace-nowrap tracking-wide">
           {name}
         </span>

@@ -103,7 +103,7 @@ export function HeroSection() {
             className="lg:col-span-5"
           >
             {/* Small thumbnail image */}
-            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8 shadow-elevated hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:scale-[1.02] transition-all duration-500 group">
+            <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8 shadow-[0_15px_50px_rgba(0,0,0,0.15)] hover:shadow-[0_25px_70px_rgba(0,0,0,0.2)] hover:scale-[1.02] transition-all duration-500 group ring-1 ring-black/5">
               <Image
                 src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=75"
                 alt="Aryap Projects"

@@ -131,7 +131,7 @@ export function Header() {
               {/* Desktop CTA */}
               <Link
                 href={`/${locale}/contact`}
-                className="hidden lg:inline-flex items-center px-5 py-2.5 bg-neutral-900 text-white text-sm font-semibold rounded-full hover:bg-neutral-800 transition-colors duration-300"
+                className="hidden lg:inline-flex items-center px-5 py-2.5 bg-neutral-900 text-white text-sm font-semibold rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] hover:bg-neutral-800 hover:-translate-y-0.5 transition-all duration-300"
               >
                 {t('contact')}
               </Link>
@@ -214,7 +214,7 @@ export function Header() {
                 <Link
                   href={`/${locale}/contact`}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center py-3.5 bg-neutral-900 text-white font-semibold rounded-full hover:bg-neutral-800 transition-colors duration-300"
+                  className="block w-full text-center py-3.5 bg-neutral-900 text-white font-semibold rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.2)] hover:bg-neutral-800 transition-all duration-300"
                 >
                   {t('contact')}
                 </Link>

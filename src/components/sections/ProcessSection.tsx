@@ -18,7 +18,7 @@ export function ProcessSection() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-white">
+    <section ref={ref} className="py-24 md:py-32 bg-neutral-50/80">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

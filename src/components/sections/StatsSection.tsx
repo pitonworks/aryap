@@ -49,9 +49,14 @@ export function StatsSection() {
       />
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2 className="font-heading text-3xl md:text-4xl font-bold text-white text-center mb-16">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="font-heading text-3xl md:text-4xl font-bold text-white text-center mb-16"
+        >
           {t('statsTitle')}
-        </h2>
+        </motion.h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {stats.map((stat, index) => (

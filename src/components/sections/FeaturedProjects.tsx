@@ -62,7 +62,7 @@ export function FeaturedProjects({ projects, locale }: FeaturedProjectsProps) {
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900">
                 {t('featuredTitle')}
               </h2>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-neutral-900 text-white text-sm font-semibold rounded-full mb-1">
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 bg-neutral-900 text-white text-sm font-semibold rounded-full mb-1 shadow-[0_4px_15px_rgba(0,0,0,0.15)]">
                 {projects.length}+
                 <span className="text-neutral-400 font-normal text-xs">
                   {locale === 'tr' ? 'Proje' : 'Projects'}
