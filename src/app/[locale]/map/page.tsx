@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MapPin, Filter, ExternalLink } from 'lucide-react';
 import { projects, type ProjectType } from '@/data/projects';

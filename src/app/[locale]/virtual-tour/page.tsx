@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Eye, ChevronRight, RotateCcw } from 'lucide-react';
 import { tours } from '@/data/tours';
