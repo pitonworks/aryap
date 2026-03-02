@@ -1,6 +1,6 @@
 # Aktif Session Notlari
 
-## Tarih: 2026-02-25
+## Tarih: 2026-03-02
 
 ### Yapilan Isler
 - Turkce karakter son duzeltmeleri (Eskisehir→Eskişehir, Tepebasi→Tepebaşı, Gokmeydan→Gökmeydan)
